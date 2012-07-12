@@ -15,7 +15,7 @@ class SimpleCmsGrailsPlugin {
     def author = "Phil Hartley"
     def authorEmail = "hart404@gmail.com"
     def description = '''\
-Provides an easy to use Content Management System for Grails web sites.
+Provides an easy to use Content Management System for Grails web sites. So simple...
 '''
 
     // URL to the plugin's documentation
