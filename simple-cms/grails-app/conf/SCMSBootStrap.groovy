@@ -2,7 +2,7 @@ import simple.cms.SCMSHTMLWidgetCreator
 import simple.cms.SCMSPageTemplate
 import simple.cms.SCMSPhotoWidgetCreator
 
-class Bootstrap {
+class SCMSBootStrap {
 	
 	static final String STANDARD_DESCRIPTION = """
 Standard internal page. Has one text area that floats to the left and two photos with captions
@@ -26,9 +26,9 @@ that float to the right.
 			description: STANDARD_DESCRIPTION,
 			associatedGSP: "standard.gsp"
 		)
-		standard.addToWidgetCreators(new SCMSHTMLWidgetCreator())
-		standard.addToWidgetCreators(new SCMSPhotoWidgetCreator())
-		standard.addToWidgetCreators(new SCMSPhotoWidgetCreator())
+		standard.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
+		standard.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
+		standard.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo2"))
 		standard.save(failOnError: true)
 	}
 
