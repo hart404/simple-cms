@@ -21,15 +21,15 @@ that float to the right.
 	}
 	
 	def createStandard() {
-		def standard = new SCMSPageTemplate(
+		def standardTemplate = new SCMSPageTemplate(
 			name: "Standard",
 			description: STANDARD_DESCRIPTION,
 			associatedGSP: "standard.gsp"
 		)
-		standard.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
-		standard.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
-		standard.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo2"))
-		standard.save(failOnError: true)
+		standardTemplate.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
+		standardTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
+		standardTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo2"))
+		standardTemplate.save(failOnError: true)
 	}
 
 

@@ -5,8 +5,16 @@ class ContentController {
     def handleContent() { 
 		def baseURI = request.forwardURI
 		def pageURI = extractURI(baseURI)
-		println pageURI
-		[pageURI: pageURI]
+		def page = SCMSPage.findByURI(pageURI)
+		if (page == null) {
+			redirect(uri: '/error')
+		}
+		def template = page.template
+		def widgets = [:]
+		page.widgets.each { widget ->
+			widgets.widgetId = widget
+		}
+		render(template.associatedGSP, model: widgets)
 	}
 	
 	String extractURI(baseURI) {

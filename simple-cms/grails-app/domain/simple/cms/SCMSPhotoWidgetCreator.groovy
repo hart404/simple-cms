@@ -5,7 +5,8 @@ class SCMSPhotoWidgetCreator extends SCMSWidgetCreator {
     static constraints = {
     }
 	
-	SCMSWidget getDomainClass() {
-		SCMSPhotoWidget
+	SCMSWidget getWidgetInstance() {
+		new SCMSPhotoWidget("widgetId": widgetId)
 	}
+
 }

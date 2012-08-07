@@ -14,4 +14,10 @@ class SCMSPage {
 		template(nullable: false)
 		widgets(nullable: false)
     }
+	
+	def generateWidgets() {
+		template.widgetCreators.each { creator ->
+			addToWidgets(creator.domainClass.newInstance())
+		}
+	}
 }
