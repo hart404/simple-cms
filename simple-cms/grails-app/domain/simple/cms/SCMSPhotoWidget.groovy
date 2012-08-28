@@ -2,11 +2,17 @@ package simple.cms
 
 class SCMSPhotoWidget extends SCMSWidget {
 	
-	String photoURL
+	SCMSPhoto photo
+	String caption
 
     static constraints = {
-		photoURL(blank: false)
+		photo(nullable: true)
+		caption(nullable: true)
     }
+	
+	static mapping = {
+		photo cascade: 'all'
+	}
 	
 	SCMSWidget getWidgetInstance() {
 		new SCMSPhotoWidget("widgetId": widgetId)

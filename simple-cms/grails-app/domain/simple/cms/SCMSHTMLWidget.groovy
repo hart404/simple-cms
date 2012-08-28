@@ -7,4 +7,8 @@ class SCMSHTMLWidget extends SCMSWidget {
 		htmlText(size: 1..60000)
     }
 	
+	static mapping = {
+		htmlText type: "text"
+	}
+	
 }

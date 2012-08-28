@@ -16,4 +16,8 @@ class SCMSPageTemplate {
 		associatedGSP(blank: false, size: 5..40)
 		widgetCreators(nullable: false)
     }
+	
+	String toString() {
+		name
+	}
 }

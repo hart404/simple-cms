@@ -6,7 +6,8 @@ class SCMSPhotoWidgetCreator extends SCMSWidgetCreator {
     }
 	
 	SCMSWidget getWidgetInstance() {
-		new SCMSPhotoWidget("widgetId": widgetId)
+		def photo = SCMSPhoto.get(SCMSPhoto.DEFAULT_PHOTO_ID)
+		new SCMSPhotoWidget("widgetId": widgetId, "photo": photo)
 	}
 
 }

@@ -1,23 +1,19 @@
 package simple.cms
 
-class SCMSPage {
+class SCMSPage extends SCMSStaticPage {
 	
-	String URI
 	SCMSPageTemplate template
+	String title
 	
-	static hasMany = [
-		widgets: SCMSWidget
-	]
-
     static constraints = {
-		URI(blank: false, size: 4..40)
+		title(nullable: false, size: 5..100)
 		template(nullable: false)
-		widgets(nullable: false)
     }
 	
 	def generateWidgets() {
 		template.widgetCreators.each { creator ->
-			addToWidgets(creator.domainClass.newInstance())
+			addToWidgets(creator.widgetInstance)
 		}
 	}
 }
+	
