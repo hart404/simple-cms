@@ -12,28 +12,32 @@ class SCMSMenu extends SCMSMenuItem {
 	}
 	
 	static mapping = {
-		menuItems(cascade: "all, delete-orphan")
+		menuItems(cascade: "all, delete-orphan", lazy: false)
 	}
 	
-	def render(level) {
+	def render(level, lastItem) {
 		StringBuffer result = new StringBuffer()
 		if (menuIsAllowed()) {
 			result << "<li><a href=\"${fullLink()}\"><span>$title</span></a>\n"
 			if (!menuItems.isEmpty()) {
-				renderMenuItems(result, level)
+				renderMenuItems(result, level, lastItem)
 			}
 			result << "</li>\n"
 		}
 		result.toString()
 	}
 	
-	def renderMenuItems(StringBuffer buffer, level) {
+	def renderMenuItems(StringBuffer buffer, level, lastItem) {
 		if (level == 1) {
-			buffer << "<div style='position: relative;'>\n"
+			buffer << "<div style='position: relative; '>\n"
 		}
-		buffer << "<ul class='sub_menu'>\n"
+		if (level == 2 && lastItem) {
+			buffer << "<ul class='sub_menu, lastItem'>\n"
+		} else {
+			buffer << "<ul class='sub_menu, notLastItem'>\n"
+		}
 		menuItems.each { menuItem ->
-			buffer << menuItem.render(level + 1)
+			buffer << menuItem.render(level + 1, lastItem)
 		}
 		buffer << "</ul>\n"
 		if (level == 1) {			
@@ -44,5 +48,30 @@ class SCMSMenu extends SCMSMenuItem {
 	def canHaveItemsAdded() {
 		true
 	}
-
+	
+	def convert() {
+		if (link != DEFAULT_LINK) {
+			def menuLink = SCMSMenuLink.findByLink(canonicalLink())
+			if (menuLink == null) {
+				menuLink = new SCMSMenuLink(menu: this, link: canonicalLink())
+				println "Creating menu link for: ${canonicalLink()}"
+				menuLink.save(failOnError: true)
+			}
+		}
+		menuItems.each { SCMSMenuItem menuItem ->
+			if (menuItem.canHaveItemsAdded()) {
+				menuItem.convert()
+			} else {
+				if (menuItem.link != DEFAULT_LINK) {
+					def menuItemLink = SCMSMenuLink.findByLink(menuItem.canonicalLink())
+					if (menuItemLink == null) {
+						menuItemLink = new SCMSMenuLink(menu: this, link: menuItem.canonicalLink())
+						println "Creating menu link for: ${canonicalLink()}"
+						menuItemLink.save(failOnError: true)
+					}
+				}
+			}
+		}
+	}
+	
 }

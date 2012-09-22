@@ -18,7 +18,7 @@
     var editor, html = '';
     var htmlWidgetId = '';
     var cssWidgetId = '';
-    var widgetType = '';
+    var callbackHTML;
 
     $(function() {
         
@@ -51,24 +51,17 @@
     });
 
     function updateHtmlText(html, id) {
-        if (widgetType == 'html') {
-	        jQuery.ajax({type:'POST', data:{'htmlText': html, 'id': id}, url:"<g:createLink controller='widget'
-	            action='updateHtmlWidget' />",success:function(data,textStatus){},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
-        } else {
-            jQuery.ajax({type:'POST', data:{'caption': html, 'id': id}, url:"<g:createLink controller='widget'
-                action='updatePhotoWidgetCaption' />",success:function(data,textStatus){},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
-        }
+    	callbackHTML(html, id);
     }
 
     function resizeEditor(width, height) {
-        console.log("Changing width and height of editor " + width + " " + height);
         CKEDITOR.instances.editor1.resize(width, height - 380);
     }
 
-    function createEditor(widgetId, id, type) {
+    function createEditor(widgetId, id, callback) {
+    	callbackHTML = callback;
     	htmlWidgetId = id;
     	cssWidgetId = widgetId;
-    	widgetType = type;
     	var html = $('#' + widgetId).html();
     	var config = {};
      	CKEDITOR.config.resize_enabled = false;
@@ -79,6 +72,24 @@
     	editor = CKEDITOR.appendTo('editor', config, html);
     	$("#dialog-form-html").dialog("open");
         return false;
+    }
+
+    function updateHtmlWidget(html, id) {
+        jQuery.ajax({type:'POST', data:{'htmlText': html, 'id': id}, url:"<g:createLink controller='widget'
+            action='updateHtmlWidget' />",success:function(data,textStatus){},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
+    }
+
+    function updatePhotoWidgetCaption(html, id) {
+        jQuery.ajax({type:'POST', data:{'caption': html, 'id': id}, url:"<g:createLink controller='widget'
+            action='updatePhotoWidgetCaption' />",success:function(data,textStatus){},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
+    }
+
+    function createEditorForHTMLWidget(widgetId, id) {
+        createEditor(widgetId, id, updateHtmlWidget);
+    }
+
+    function createEditorForPhotoCaption(widgetId, id) {
+        createEditor(widgetId, id, updatePhotoWidgetCaption);
     }
     </script>
 </div>

@@ -15,17 +15,26 @@ class SCMSMenuBar {
 	}
 	
 	static mapping = {
-		menus(cascade: "all, delete-orphan")
+		menus(cascade: "all, delete-orphan", lazy: false)
 	}
 	
 	def render() {
 		StringBuffer result = new StringBuffer()
 		result << "<ul class='dropdown'>\n"
-		menus.each { menu ->
-			result << menu.render(1)
+		def visibleMenus = menus.findAll { menu -> menu.menuIsAllowed()}
+		visibleMenus.eachWithIndex { menu, index ->
+			if (index != visibleMenus.size() - 1) {
+				result << menu.render(1, false)
+			} else {
+				result << menu.render(1, true)
+			}			
 		}
 		result << "</ul>\n"
 		return result.toString()
 	}
-
+	
+	def migrateMenus() {
+		menus*.convert()
+	}
+	
 }

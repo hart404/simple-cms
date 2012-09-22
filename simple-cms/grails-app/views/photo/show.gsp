@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Show Photo</title>
-	<meta name="layout" content="mainLayout" />
+	<meta name="layout" content="generatedLayout" />
 </head>
 <body>
 	<g:if test="${photo.width > 600}">

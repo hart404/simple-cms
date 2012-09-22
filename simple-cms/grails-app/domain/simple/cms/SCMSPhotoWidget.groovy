@@ -14,7 +14,4 @@ class SCMSPhotoWidget extends SCMSWidget {
 		photo cascade: 'all'
 	}
 	
-	SCMSWidget getWidgetInstance() {
-		new SCMSPhotoWidget("widgetId": widgetId)
-	}
 }

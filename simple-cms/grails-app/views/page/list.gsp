@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="mainLayout">
+		<meta name="layout" content="generatedLayout">
 		<g:set var="entityName" value="${message(code: 'SCMSPage.label', default: 'SCMSPage')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
@@ -12,7 +12,7 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+				<li><g:link class="create" action="create"><g:message code="default.new.label" args="['Page']" /></g:link></li>
 			</ul>
 		</div>
 		<div id="list-SCMSPage" class="content scaffold-list" role="main">
@@ -27,6 +27,8 @@
 					
 						<g:sortableColumn property="link" title="${message(code: 'SCMSPage.link.label', default: 'Link')}" />
 					
+                        <th>Description Metadata</th>
+                        <th>Keywords Metadata</th>
 						<th><g:message code="SCMSPage.template.label" default="Template" /></th>
 					
 					</tr>
@@ -37,8 +39,10 @@
 					
 						<td><g:link action="edit" id="${pageInstance.id}">${fieldValue(bean: pageInstance, field: "title")}</g:link></td>
 					    <td>${pageInstance.link}</td>
-						<td>${fieldValue(bean: pageInstance, field: "template")}</td>
-					
+						<td>${fieldValue(bean: pageInstance, field: "descriptionMetadata")}</td>
+                        <td>${fieldValue(bean: pageInstance, field: "keywordsMetadata")}</td>
+                        <td>${fieldValue(bean: pageInstance, field: "template")}</td>
+					   
 					</tr>
 				</g:each>
 				</tbody>
@@ -47,5 +51,12 @@
 				<g:paginate total="${pageInstanceTotal}" />
 			</div>
 		</div>
+		<script type="text/javascript">
+		function rebuildPage(pageId) {
+            jQuery.ajax({type:'GET', data:{'id': pageId}, url:"<g:createLink controller='page'
+                    action='rebuildPage' />",success:function(data,textStatus){jQuery('#results').html(data);},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
+        }
+        </script>
+        <div id="results"></div>
 	</body>
 </html>

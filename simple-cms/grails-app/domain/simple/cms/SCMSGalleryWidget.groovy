@@ -2,9 +2,19 @@ package simple.cms
 
 class SCMSGalleryWidget extends SCMSWidget {
 
-	List<SCMSPhoto> photos
-	
+	List<SCMSPhotoWidget> photoWidgets = []
+	String title = "Default Title"
+	static hasMany = [
+		photoWidgets: SCMSPhotoWidget
+	]
+
     static constraints = {
-		photos(nullable: false)
+		photoWidgets(nullable: false)
+		title(nullable: false)
     }
+	
+	static mapping = {
+		photoWidgets cascade: "all"
+	}
+	
 }

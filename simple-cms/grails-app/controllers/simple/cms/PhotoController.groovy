@@ -4,6 +4,7 @@ import grails.converters.JSON
 
 import javax.servlet.http.HttpServletRequest
 
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
 
@@ -14,9 +15,10 @@ import com.drew.metadata.exif.ExifIFD0Directory
 import com.drew.metadata.iptc.IptcDirectory
 import com.drew.metadata.jpeg.JpegDirectory
 
+
 class PhotoController {
 	static final String DEFAULT_S3_SOURCE = 'https://s3.amazonaws.com'
-	static final String DEFAULT_PATH = "conservancyImages"
+	static final String DEFAULT_PATH = "McDowellSonoranConservancyImages"
 	
 	def amazonS3Service
 	def searchableService
@@ -149,12 +151,89 @@ class PhotoController {
 		def keywords = params["keywords"]
 		params.max = 5
 		def results = SCMSPhoto.search(keywords, params)
-		render(template: "/photo/photoSearchList", model: ["searchResult": results])
+		render(template: "/photo/photoSearchList", model: ["searchResult": results], plugin: "simple-cms")
+	}
+	
+	def searchForPhotosMultiple() {
+		def keywords = params["keywords"]
+		params.max = 5
+		def results = SCMSPhoto.search(keywords, params)
+		render(template: "/photo/photoSearchListMultiple", model: ["searchResult": results], plugin: "simple-cms")
 	}
 	
 	def list() {
 		params.max = Math.min(params.max ? params.int('max') : 5, 100)
 		[photoInstanceList: SCMSPhoto.list(params), photoInstanceTotal: SCMSPhoto.count()]
 	}
+	
+	def save() {
+		def photoInstance = new SCMSPhoto(params)
+		if (!photoInstance.save(flush: true)) {
+			render(view: "create", model: [photoInstance: photoInstance])
+			return
+		}
+
+		flash.message = message(code: 'default.created.message', args: [message(code: 'SCMSPhoto.label', default: 'SCMSPhoto'), photoInstance.id])
+		redirect(action: "show", id: photoInstance.id)
+	}
+
+	def edit(Long id) {
+		def photoInstance = SCMSPhoto.get(id)
+		if (!photoInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'SCMSPhoto.label', default: 'SCMSPhoto'), id])
+			redirect(action: "list")
+			return
+		}
+		[photoInstance: photoInstance]
+	}
+	
+	def update(Long id, Long version) {
+		def photoInstance = SCMSPhoto.get(id)
+		if (!photoInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'SCMSPhoto.label', default: 'SCMSPhoto'), id])
+			redirect(action: "list")
+			return
+		}
+
+		if (version != null) {
+			if (photoInstance.version > version) {
+				photoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+						  [message(code: 'SCMSPhoto.label', default: 'SCMSPhoto')] as Object[],
+						  "Another user has updated this SCMSPhoto while you were editing")
+				render(view: "edit", model: [photoInstance: photoInstance])
+				return
+			}
+		}
+
+		photoInstance.properties = params
+
+		if (!photoInstance.save(flush: true)) {
+			render(view: "edit", model: [photoInstance: photoInstance])
+			return
+		}
+
+		flash.message = message(code: 'default.updated.message', args: [message(code: 'SCMSPhoto.label', default: 'SCMSPhoto'), photoInstance.id])
+		redirect(action: "show", id: photoInstance.id)
+	}
+
+	def delete(Long id) {
+		def photoInstance = SCMSPhoto.get(id)
+		if (!photoInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'SCMSPhoto.label', default: 'SCMSPhoto'), id])
+			redirect(action: "list")
+			return
+		}
+
+		try {
+			photoInstance.delete(flush: true)
+			flash.message = message(code: 'default.deleted.message', args: [message(code: 'SCMSPhoto.label', default: 'SCMSPhoto'), id])
+			redirect(action: "list")
+		}
+		catch (DataIntegrityViolationException e) {
+			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'SCMSPhoto.label', default: 'SCMSPhoto'), id])
+			redirect(action: "show", id: id)
+		}
+	}
+
 
 }

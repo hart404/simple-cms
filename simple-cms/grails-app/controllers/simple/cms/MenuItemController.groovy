@@ -4,7 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class MenuItemController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "GET"]
 
     def index() {
         redirect(action: "list", params: params)
@@ -25,7 +25,7 @@ class MenuItemController {
             render(view: "create", model: [menuItemInstance: menuItemInstance])
             return
         }
-
+		
         flash.message = message(code: 'default.created.message', args: [message(code: 'SCMSMenuItem.label', default: 'SCMSMenuItem'), menuItemInstance.id])
         redirect(action: "show", id: menuItemInstance.id)
     }
@@ -101,19 +101,33 @@ class MenuItemController {
     }
 	
 	def updateMenuItem() {
-		def menu = SCMSMenuItem.get(params.id)
-		menu.title = params.title
-		menu.link = params.link
+		def menuItem = SCMSMenuItem.get(params.id)
+		menuItem.title = params.title
+		menuItem.link = params.link
 		// If roles is not passed back as a parameter, clear the roles
 		def roles = params.list('roles[]')
 		if (!roles) {
-			menu.roles.clear()
-			menu.roles = []
+			menuItem.roles.clear()
+			menuItem.roles = []
 		} else {
-			menu.roles = roles
+			menuItem.roles = roles
 		}
-		menu.save(failOnError: true)
+		menuItem.save(failOnError: true)
+		def menu = SCMSMenu.get(params.menuId)
+		assert menu != null
+		createMenuLink(menu, menuItem.canonicalLink())
 		render(template: '/layouts/updated')
 	}
-
+	
+	def createMenuLink(menu, link) {
+		def menuLink = SCMSMenuLink.findByLink(link)
+		if (menuLink == null) {
+			menuLink = new SCMSMenuLink(menu: menu, link: link)
+			menuLink.save(failOnError: true, flush: true)
+		} else {
+			menuLink.menu = menu
+			menuLink.save(failOnError: true, flush: true)
+		}
+	} 
+	
 }

@@ -2,16 +2,16 @@
     No results    
 </g:if>
 <g:else>
-	<ul>
+	<ul class="scmsPhotoList">
 		<g:each var="photo" in="${searchResult.results}">
 			<li>
-				${photo.originalFileName} 
 				<g:if test="${photo.height > 100}">
 					<img src="${photo.fullPath()}" height="100" width="${(100 / photo.height) * photo.width}" />
 				</g:if> 
 				<g:else>
 					<img src="${photo.fullPath()}" />
 				</g:else> 
+				${photo.shortenedFileName()} - ${photo.width}x${photo.height} 
 				<input type="button" name="Select" value="select" onClick="selectPhoto('${photo.originalFileName}', '${photo.id}')" />
 			</li>
 		</g:each>

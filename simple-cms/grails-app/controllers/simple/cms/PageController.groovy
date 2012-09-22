@@ -21,10 +21,8 @@ class PageController {
     }
 
     def save() {
-		println "Save Page: ${params}"
         def pageInstance = new SCMSPage(params)
 		pageInstance.generateWidgets()
-		println "link: ${params.link}"
 		pageInstance.link = params.link
         if (!pageInstance.save(flush: true)) {
             render(view: "create", model: [pageInstance: pageInstance])
@@ -76,6 +74,8 @@ class PageController {
         }
 
         pageInstance.properties = params
+		// Ensures that any necessary widgets are created if the template is changed
+		pageInstance.generateWidgets()
 
         if (!pageInstance.save(flush: true)) {
             render(view: "edit", model: [pageInstance: pageInstance])
@@ -93,7 +93,10 @@ class PageController {
             redirect(action: "list")
             return
         }
-
+		def menuLink = SCMSMenuLink.findByLink(pageInstance.link)
+		if (menuLink != null) {
+			menuLink.delete(flush:true)
+		}
         try {
             pageInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'SCMSPage.label', default: 'SCMSPage'), id])
@@ -104,4 +107,17 @@ class PageController {
             redirect(action: "show", id: id)
         }
     }
+	
+	def rebuildPage(Long id) {
+		def pageInstance = SCMSPage.get(id)
+		def template = pageInstance.template
+		if (pageInstance.widgets.size() != template.widgetCreators.size()) {
+			log.error("Page with link: ${pageInstance.link} has ${pageInstance.widgets.size()} widgets and should have ${template.widgetCreators.size()}")
+			pageInstance.widgets.clear()
+			pageInstance.generateWidgets()
+			render(template: '/layouts/rebuilt')
+		} else {
+			render(template: '/layouts/unnecessary') 
+		}
+	}
 }

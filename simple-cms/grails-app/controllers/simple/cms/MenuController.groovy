@@ -4,7 +4,9 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class MenuController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "GET"]
+	
+	def menuService
 
     def index() {
         redirect(action: "list", params: params)
@@ -25,6 +27,7 @@ class MenuController {
             render(view: "create", model: [menuInstance: menuInstance])
             return
         }
+		createMenuLink(menu: menuInstance, link: menuInstance.canonicalLink())
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'SCMSMenu.label', default: 'SCMSMenu'), menuInstance.id])
         redirect(action: "show", id: menuInstance.id)
@@ -76,7 +79,8 @@ class MenuController {
             render(view: "edit", model: [menuInstance: menuInstance])
             return
         }
-
+		createMenuLink(menu: menuInstance, link: menuInstance.canonicalLink())
+		
         flash.message = message(code: 'default.updated.message', args: [message(code: 'SCMSMenu.label', default: 'SCMSMenu'), menuInstance.id])
         redirect(action: "show", id: menuInstance.id)
     }
@@ -113,7 +117,16 @@ class MenuController {
 			menu.roles = roles
 		}
 		menu.save(failOnError: true)
+		createMenuLink(menu, menu.canonicalLink())
 		render(template: '/layouts/updated')
+	}
+	
+	def createMenuLink(menu, link) {
+		def menuLink = SCMSMenuLink.findByLink(link)
+		if (menuLink == null) {
+			menuLink = new SCMSMenuLink(menu: menu, link: link)
+			menuLink.save(failOnError: true)
+		}
 	}
 	
 	def addSubMenu() {
@@ -125,8 +138,10 @@ class MenuController {
 		if (roles) {
 			menuNew.roles = roles
 		}
+		menuNew.save(failOnError: true, flush: true)
 		menu.addToMenuItems(menuNew)
-		menu.save(failOnError: true)
+		menu.save(failOnError: true, flush: true)
+		createMenuLink(menuNew, menuNew.canonicalLink())
 		render(template: '/layouts/updated')
 	}
 
@@ -141,6 +156,17 @@ class MenuController {
 		}
 		menu.addToMenuItems(menuItemNew)
 		menu.save(failOnError: true)
+		createMenuLink(menu, menuItemNew.canonicalLink())
+		render(template: '/layouts/updated')
+	}
+	
+	def removeMenu() {
+		menuService.removeMenu(params)
+		render(template: '/layouts/updated')
+	}
+
+	def removeMenuItem() {
+		menuService.removeMenuItem(params)
 		render(template: '/layouts/updated')
 	}
 

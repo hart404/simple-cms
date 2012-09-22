@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>Photo Upload</title>
-<meta name="layout" content="mainLayout" />
+<meta name="layout" content="generatedLayout" />
 <head>
 	<g:javascript src="ajax-uploader/application.js"/>
 	<g:javascript src="ajax-uploader/fileuploader.js"/>

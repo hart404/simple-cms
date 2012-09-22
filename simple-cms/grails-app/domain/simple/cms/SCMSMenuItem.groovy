@@ -8,14 +8,16 @@ class SCMSMenuItem {
 	
 	LinkGenerator grailsLinkGenerator
 	
+	static String DEFAULT_LINK = "#"
+	
 	static List<String> possibleRoles() {
 		["ROLE_ADMIN", "ROLE_GUEST","ROLE_USER","ROLE_STEWARD", "ROLE_LEADER", "ROLE_BOARD", "ROLE_STAFF", "ROLE_WEB"]
 	}
 	
-	String title
-	String link = '#'			// Default link
-	
 	static transients = ['grailsLinkGenerator']
+	
+	String title
+	String link = DEFAULT_LINK			// Default link
 	
 	List<String> roles = []		// Can't make a direct reference to SecRole - TODO
 	static hasMany = [
@@ -28,12 +30,16 @@ class SCMSMenuItem {
 		roles(size: 0..20)
 	} 
 	
+	static mapping = {
+		roles(lazy: false)
+	}
+	
 	boolean menuIsAllowed() {
 		if (roles.isEmpty()) return true
 		SpringSecurityUtils.ifAnyGranted(roleList())
 	}
 	
-	def render(level) {
+	def render(level, lastItem) {
 		if (menuIsAllowed()) {
 			return "<li><a href=\"${fullLink()}\"><span>$title</span></a></li>\n"
 		} else {
@@ -46,15 +52,24 @@ class SCMSMenuItem {
 	}
 	
 	def fullLink() {
-		if (link.startsWith('/')) {
-			return grailsLinkGenerator.contextPath + link
-		} else {
-			return grailsLinkGenerator.contextPath + '/' + link
-		}
+		grailsLinkGenerator.contextPath + canonicalLink()
 	}
 	
 	def canHaveItemsAdded() {
 		false
 	}
+	
+	def canonicalLink() {
+		if (link.startsWith("/")) {
+			return link
+		}
+		return "/" + link
+	}
+	
+	def convert() {
+		// Do nothing for menu items
+	}
+
+
 	
 }

@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="mainLayout">
+		<meta name="layout" content="generatedLayout">
 		<g:set var="entityName" value="${message(code: 'SCMSPage.label', default: 'SCMSPage')}" />
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
 	</head>

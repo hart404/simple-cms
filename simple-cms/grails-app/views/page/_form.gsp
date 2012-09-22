@@ -17,6 +17,20 @@
 	<g:textField name="link" maxlength="40" required="true" value="${pageInstance?.link}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'descriptionMetadata', 'error')}">
+    <label for="uri">
+        <g:message code="SCMSPage.descriptionmetadata.label" default="Description Metadata" />
+    </label>
+    <g:textField name="descriptionMetadata" maxlength="40" value="${pageInstance?.descriptionMetadata}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'keywordsMetadata', 'error')}">
+    <label for="uri">
+        <g:message code="SCMSPage.keywordsmetadata.label" default="Keywords Metadata" />
+    </label>
+    <g:textField name="keywordsMetadata" maxlength="40" value="${pageInstance?.keywordsMetadata}"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'template', 'error')} required">
 	<label for="template">
 		<g:message code="SCMSPage.template.label" default="Template" />

@@ -44,6 +44,13 @@ class SCMSPhoto {
 	}
 	
 	String toString() {
-		originalFileName
+		"File: ${originalFileName} width: ${width} height: ${height} keywords: ${keywords}"
+	}
+	
+	String shortenedFileName() {
+		if (originalFileName.size() > 10) {
+			return "${originalFileName[0..9]}..."
+		}
+		return originalFileName
 	}
 }

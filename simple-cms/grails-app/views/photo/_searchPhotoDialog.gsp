@@ -1,4 +1,4 @@
-<div id="dialog-form" title="Search for Photos" style="display: none">
+<div id="dialog-form-photo" title="Search for Photos" style="display: none">
     <script>
     $('#spinner').hide();
     jQuery.ajaxSetup({
@@ -15,7 +15,7 @@
 
     $(function() {
         
-        $("#dialog-form").dialog({
+        $("#dialog-form-photo").dialog({
             autoOpen: false,
             height: 800,
             width: 600,
@@ -33,34 +33,40 @@
         });
 
         $("#search")
-            .button()
-            .click(function() {
-            	$('#results').html('');
-                $("#dialog-form").dialog("open");
-                return false;
-            });
-
-        $("#dialog-form").keydown(function (event) {
-            if (event.keyCode == 13) {
-                $(this).parent()
-                       .find("button:eq(0)").trigger("click");
-            }
+        .button()
+        .click(function() {
+            $('#resultsPhoto').html('');
+            selectPhotoCallback = standardPhotoSelectCallback;
+            $("#dialog-form-photo").dialog("open");
             return false;
         });
+
     });
 
     function searchForKeywords(keywords, offset) {
         jQuery.ajax({type:'POST', data:{'keywords': keywords, 'offset': offset}, url:"<g:createLink controller='photo'
-            action='searchForPhotos' />",success:function(data,textStatus){jQuery('#results').html(data);},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
+            action='searchForPhotos' />",success:function(data,textStatus){jQuery('#resultsPhoto').html(data);},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
     }
 
-    // Assumes the using GSP has photoId and photoFileName elements
+    var selectPhotoCallback;
+
+    function openPhotoSelectDialog(selectPhotoFunction) {
+        selectPhotoCallback = selectPhotoFunction;
+        $('#resultsPhoto').html('');
+        $("#dialog-form-photo").dialog("open");
+    }
+
     function selectPhoto(fileName, id) {
-        $("#photoId").val(id);
-        $("#photoFileName").text(fileName);
-        $("#dialog-form").dialog("close");
+        $("#dialog-form-photo").dialog("close");
+        selectPhotoCallback(fileName, id);
         return false;
     }
+
+    function standardPhotoSelectCallback(fileName, id) {
+        $("#photoId").val(id);
+        $("#photoFileName").text(fileName);
+    }
+    
     </script>
     <form>
         <fieldset>
@@ -69,5 +75,5 @@
 	        <img src="<g:createLinkTo dir='/images' file='spinner.gif'/>" id="spinner"/>
 	    </fieldset>
     </form>
-    <div id="results"></div>
+    <div id="resultsPhoto"></div>
 </div>

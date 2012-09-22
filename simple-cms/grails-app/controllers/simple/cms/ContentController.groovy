@@ -9,22 +9,35 @@ class ContentController {
     def handleContent() { 
 		def contextPath = grailsLinkGenerator.contextPath
 		def baseURI = request.forwardURI
-		println "Base URI ${baseURI}"
 		baseURI = baseURI[contextPath.size()..-1]
 		def pageURI = baseURI[('content/pages/').size()..-1]
 		pageURI = pageURI.stripMargin("/")		
-		println "Page URI ${pageURI}"
 		def page = SCMSPage.findByLink(pageURI)
+		if (!baseURI.startsWith("/")) {
+			baseURI = "/" + baseURI
+		}
 		if (page == null) {
-			redirect(uri: '/error.gsp')
+			redirect(uri: '/error', params: [page: baseURI])
 		} else {
 			def template = page.template
 			def widgets = [:]
 			page.widgets.each { widget ->
 				widgets[widget.widgetId] = widget
 			}
+			def menuLink = SCMSMenuLink.findByLink(baseURI)
+			if (menuLink == null) {
+				println "Disaster! No menuLink found for: ${baseURI}"
+			} else {
+				widgets.menu = menuLink.menu
+			}
+			widgets.page = page
+			widgets.link = baseURI.stripMargin("/")
 			render(view: template.associatedGSP, model: widgets)
 		}
+	}
+	
+	def handlePage() {
+		redirect(uri: "/content/pages/${params.link}")
 	}
 	
 }

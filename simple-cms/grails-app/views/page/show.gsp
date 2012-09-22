@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="mainLayout">
+		<meta name="layout" content="generatedLayout">
 		<g:set var="entityName" value="${message(code: 'SCMSPage.label', default: 'SCMSPage')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
@@ -45,7 +45,7 @@
 				<li class="fieldcontain">
 					<span id="template-label" class="property-label"><g:message code="SCMSPage.template.label" default="Template" /></span>
 					
-						<span class="property-value" aria-labelledby="template-label"><g:link controller="SCMSPageTemplate" action="show" id="${pageInstance?.template?.id}">${pageInstance?.template?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="template-label"><g:link controller="pageTemplate" action="show" id="${pageInstance?.template?.id}">${pageInstance?.template?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>

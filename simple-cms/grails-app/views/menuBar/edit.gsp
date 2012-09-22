@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="mainLayout">
+		<meta name="layout" content="generatedLayout">
 		<g:set var="entityName" value="${message(code: 'SCMSMenuBar.label', default: 'SCMSMenuBar')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
 	</head>
@@ -11,8 +11,6 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="edit-SCMSMenuBar" class="content scaffold-edit" role="main">
@@ -32,9 +30,6 @@
 				<g:hiddenField name="version" value="${menuBarInstance?.version}" />
 				<fieldset class="form">
 					<g:render template="form"/>
-				</fieldset>
-				<fieldset class="buttons">
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 				</fieldset>
 			</g:form>
 		</div>

@@ -17,7 +17,6 @@ class WidgetService {
 	
 	def updatePhotoWidgetCaption(id, caption) {
 		def photoWidget = SCMSPhotoWidget.get(id)
-		println "Updated Caption: ${caption}"
 		photoWidget.caption = caption
 		photoWidget.save(failOnError: true)
 	}

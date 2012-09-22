@@ -33,7 +33,7 @@
                           <button type='button' onClick="updateMenu(${menu.id});" >Update</button>
                        </g:if>
                        <g:else>
-                          <button type='button' onClick="updateMenuItem(${menu.id});" >Update</button>
+                          <button type='button' onClick="updateMenuItem(${menu.id}, ${menuInstance.id});" >Update</button>
                        </g:else>                       
                     </td>
                     <td>
@@ -43,10 +43,10 @@
                     </td>
                     <td>
                        <g:if test="${menu.canHaveItemsAdded()}">
-                          <g:link controller="menu" action="delete" id="${menu.id}">Delete</g:link>
+                          <button type='button' onClick="removeMenu(${menuInstance.id}, ${menu.id});" >Delete</button>
                        </g:if>
                        <g:else>
-                          <g:link controller="menuItem" action="delete" id="${menu.id}">Delete</g:link>
+                          <button type='button' onClick="removeMenuItem(${menuInstance.id}, ${menu.id});" >Delete</button>
                        </g:else>                       
                     </td>
                 </tr>
@@ -87,15 +87,15 @@
             }
         }
 
-        function updateMenuItem(menuId) {
-            var title = $("#title" + menuId).val()
-            var link = $("#link" + menuId).val()
-            var roles = $("#roles" + menuId).val()
+        function updateMenuItem(menuItemId, menuId) {
+            var title = $("#title" + menuItemId).val()
+            var link = $("#link" + menuItemId).val()
+            var roles = $("#roles" + menuItemId).val()
             if (roles == null) {
-                jQuery.ajax({type:'GET', data:{'id': menuId, 'title': title, 'link': link}, url:"<g:createLink controller='menuItem'
+                jQuery.ajax({type:'GET', data:{'id': menuItemId, 'menuId': menuId, 'title': title, 'link': link}, url:"<g:createLink controller='menuItem'
                     action='updateMenuItem' />",success:function(data,textStatus){jQuery('#results').html(data);},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
             } else {
-                jQuery.ajax({type:'GET', data:{'id': menuId, 'title': title, 'link': link, 'roles': roles}, url:"<g:createLink controller='menuItem'
+                jQuery.ajax({type:'GET', data:{'id': menuItemId, 'menuId': menuId, 'title': title, 'link': link, 'roles': roles}, url:"<g:createLink controller='menuItem'
                     action='updateMenuItem' />",success:function(data,textStatus){jQuery('#results').html(data);},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
             }
         }
@@ -125,6 +125,16 @@
                     action='addMenuItem' />",success:function(data,textStatus){jQuery('#results').html(data); window.location.reload();},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
             }
         }
+
+        function removeMenu(menuId, subMenuId) {
+            jQuery.ajax({type:'GET', data:{'id': menuId, 'menuId': subMenuId}, url:"<g:createLink controller='menu'
+                action='removeMenu' />",success:function(data,textStatus){jQuery('#results').html(data); window.location.reload();},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
+        }
                     
+            function removeMenuItem(menuId, subMenuId) {
+                jQuery.ajax({type:'GET', data:{'id': menuId, 'menuId': subMenuId}, url:"<g:createLink controller='menu'
+                    action='removeMenuItem' />",success:function(data,textStatus){jQuery('#results').html(data); window.location.reload();},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
+            }
+                        
     </script>
 

@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="mainLayout">
+		<meta name="layout" content="generatedLayout">
 		<g:set var="entityName" value="${message(code: 'adSpacePhoto.label', default: 'AdSpacePhoto')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>

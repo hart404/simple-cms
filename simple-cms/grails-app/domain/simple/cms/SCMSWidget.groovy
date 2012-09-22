@@ -7,7 +7,7 @@ class SCMSWidget {
 	Date lastUpdated
 
     static constraints = {
-		widgetId(size: 4..30)
+		widgetId(size: 1..30)
 		cssClass(nullable: true)
     }
 	

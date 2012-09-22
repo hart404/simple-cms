@@ -1,6 +1,6 @@
 <html>
 <head>
-    <meta name="layout" content="mainLayout" />
+    <meta name="layout" content="contentSidebarLayout" />
     <title>Support Us</title>
 </head>
 <body>
