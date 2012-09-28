@@ -11,6 +11,7 @@
 				<g:else>
 					<img src="${photo.fullPath()}" />
 				</g:else> 
+				<br/>
 				${photo.shortenedFileName()} - ${photo.width}x${photo.height} 
 				<input type="button" name="Select" value="select" onClick="selectPhoto('${photo.originalFileName}', '${photo.id}')" />
 			</li>

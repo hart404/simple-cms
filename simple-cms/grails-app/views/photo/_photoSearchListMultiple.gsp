@@ -2,7 +2,7 @@
     No results    
 </g:if>
 <g:else>
-	<ul>
+	<ul class="scmsPhotoList">
 		<g:each var="photo" in="${searchResult.results}">
 			<li> 
 				<g:if test="${photo.height > 100}">
@@ -11,6 +11,7 @@
 				<g:else>
 					<img src="${photo.fullPath()}" />
 				</g:else> 
+				<br/>
 				${photo.shortenedFileName()} - ${photo.width}x${photo.height}
 				<input type="checkbox" name="Select" value="select" onclick="selectOrDeselectPhoto(this, ${photo.id})" />
 			</li>

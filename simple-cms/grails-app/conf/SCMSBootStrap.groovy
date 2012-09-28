@@ -8,6 +8,8 @@ import simple.cms.SCMSPhotoWidgetCreator
 
 class SCMSBootStrap {
 	
+	def photoService
+	
 	static final String STANDARD_DESCRIPTION = """
 Standard internal page. Has one text area that floats to the left and two photos with captions
 that float to the right.
@@ -27,7 +29,6 @@ Has no sidebar navigation and contains only one HTML widget.
 	def init = { servletContext ->
 		createDefaultPhoto()
 		createPageTemplates()
-		migrateMenus()
 	}
 
 	def destroy = {
@@ -76,6 +77,8 @@ Has no sidebar navigation and contains only one HTML widget.
 	}
 	
 	def createDefaultPhoto() {
+		def defaultPhotos = SCMSPhoto.findAllBySource("http://new.mcdowellsonoran.org")
+		println "There are ${defaultPhotos.size()} Gateway Buildings..."
 		def defaultPhoto = SCMSPhoto.findByDescription("Gateway Building")
 		println "Default photo: ${defaultPhoto}"
 		if (defaultPhoto == null) {
@@ -84,6 +87,8 @@ Has no sidebar navigation and contains only one HTML widget.
 			def gatewayBuilding = new SCMSPhoto(description: "Gateway Building", source: serverURL, path: imagePath, originalFileName: "Gateway Building.jpg", fileName: "Gateway Building.jpg", width: 5616, height: 3744, keywords: ["Gateway View default photo"], allKeywords: "default", artist: "Phil", copyright: "None")
 			gatewayBuilding.save(failOnError: true, flush: true)
 			SCMSPhoto.DEFAULT_PHOTO_ID = gatewayBuilding.id
+		} else {
+			SCMSPhoto.DEFAULT_PHOTO_ID = defaultPhoto.id
 		}
 	}
 	
@@ -119,14 +124,5 @@ Has no sidebar navigation and contains only one HTML widget.
 			galleryTemplate.save(failOnError: true)
 		}
 	}
-	
-	def migrateMenus() {
-		SCMSMenuBar menuBar = SCMSMenuBar.findByWidgetId("mainNavigationBar")
-		if (menuBar == null) {
-			println "Disaster - couldn't find main nav bar!"
-		} else {
-			menuBar.migrateMenus()
-		}
-	}
-	
+		
 }

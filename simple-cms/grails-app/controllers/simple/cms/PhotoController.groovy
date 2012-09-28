@@ -22,6 +22,7 @@ class PhotoController {
 	
 	def amazonS3Service
 	def searchableService
+	def photoService
 	
 	// Remember to terminate the path with a '/'
 	def rootDirectory = System.getProperty("user.home")
@@ -143,10 +144,6 @@ class PhotoController {
 		// metadataMap["usageRights"] = directory?.getString(IptcDirectory.TAG_) ?: ""
 	}
 	
-	def deleteAllPhotos() {
-		SCMSPhoto.where { }.deleteAll()
-	}
-	
 	def searchForPhotos() {
 		def keywords = params["keywords"]
 		params.max = 5
@@ -162,7 +159,9 @@ class PhotoController {
 	}
 	
 	def list() {
-		params.max = Math.min(params.max ? params.int('max') : 5, 100)
+		params.max = Math.min(params.max ? params.int('max') : 20, 100)
+		params.sort = "originalFileName"
+		params.order = "asc"
 		[photoInstanceList: SCMSPhoto.list(params), photoInstanceTotal: SCMSPhoto.count()]
 	}
 	
@@ -234,6 +233,14 @@ class PhotoController {
 			redirect(action: "show", id: id)
 		}
 	}
-
-
+	
+	def deleteMultiplePhotos() {
+		println "Deleting photos with params: ${params}"
+		def photoIds = params.list('photoIds[]')
+		photoIds.each { photoId ->
+			photoService.deleteIndividualPhoto(photoId)
+		}
+		render(text: [success:true] as JSON, contentType:'text/json')
+	}
+	
 }

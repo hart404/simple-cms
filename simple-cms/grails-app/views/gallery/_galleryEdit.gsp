@@ -52,7 +52,7 @@
     function removeGalleryPhotoWidget(galleryId, photoWidgetId) {
         jQuery.ajax({type:'POST', data:{'id': galleryId, 'photoWidgetId': photoWidgetId}, url:"<g:createLink controller='gallery'
             action='deletePhotoWidget' />", success:function(data,textStatus){}, error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}}); 
-        getLightboxPhotoWidgets(lightboxId, 0, 5);   
+        getGalleryPhotoWidgets(galleryId, 0, 5);   
     }
         
     function openGalleryUpdate(id) {

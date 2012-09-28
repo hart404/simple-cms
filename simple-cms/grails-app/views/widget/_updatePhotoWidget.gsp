@@ -22,7 +22,7 @@
 
     function selectPhotoForPhotoWidget(fileName, photoId) {
         jQuery.ajax({type:'POST', data:{'photoId': photoId, 'id': photoWidgetId}, url:"<g:createLink controller='widget' action='updatePhotoWidgetPhoto' />", 
-            success:function(data,textStatus){window.location.reload()},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
+            success:function(data,textStatus){window.location.reload(); },error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
         return false;
     }
 </script>

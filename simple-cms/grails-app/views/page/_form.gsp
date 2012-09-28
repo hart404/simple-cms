@@ -6,7 +6,7 @@
         <g:message code="SCMSPage.title.label" default="Title" />
         <span class="required-indicator">*</span>
     </label>
-    <g:textField name="title" maxlength="100" required="true" value="${pageInstance?.title}"/>
+    <g:textField name="title" maxlength="100" size="40" required="true" value="${pageInstance?.title}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'link', 'error')} required">
@@ -14,21 +14,21 @@
 		<g:message code="SCMSPage.link.label" default="Link" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="link" maxlength="40" required="true" value="${pageInstance?.link}"/>
+	<g:textField name="link" maxlength="40" size="30" required="true" value="${pageInstance?.link}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'descriptionMetadata', 'error')}">
     <label for="uri">
         <g:message code="SCMSPage.descriptionmetadata.label" default="Description Metadata" />
     </label>
-    <g:textField name="descriptionMetadata" maxlength="40" value="${pageInstance?.descriptionMetadata}"/>
+    <g:textField name="descriptionMetadata" maxlength="120" size="120" value="${pageInstance?.descriptionMetadata}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'keywordsMetadata', 'error')}">
     <label for="uri">
         <g:message code="SCMSPage.keywordsmetadata.label" default="Keywords Metadata" />
     </label>
-    <g:textField name="keywordsMetadata" maxlength="40" value="${pageInstance?.keywordsMetadata}"/>
+    <g:textField name="keywordsMetadata" maxlength="120" size="120" value="${pageInstance?.keywordsMetadata}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'template', 'error')} required">

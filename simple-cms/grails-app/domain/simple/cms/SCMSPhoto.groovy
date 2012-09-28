@@ -48,8 +48,8 @@ class SCMSPhoto {
 	}
 	
 	String shortenedFileName() {
-		if (originalFileName.size() > 10) {
-			return "${originalFileName[0..9]}..."
+		if (originalFileName.size() > 40) {
+			return "${originalFileName[0..39]}..."
 		}
 		return originalFileName
 	}

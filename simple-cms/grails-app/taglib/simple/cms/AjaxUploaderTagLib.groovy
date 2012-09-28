@@ -1,8 +1,7 @@
 package simple.cms
 
-
 class AjaxUploaderTagLib {
-
+	
     String currentUploaderUid = null
     StringWriter htmlOut = new StringWriter()
     StringWriter jsOut = new StringWriter()
@@ -32,7 +31,7 @@ class AjaxUploaderTagLib {
 
     static Map<String, List<String>> ALL_ATTRIBUTES = [:]
 
-    static namespace = 'uploader'
+	static namespace = 'uploader'
 
     def head = { attrs, body ->
         out << g.javascript([library:'fileuploader', plugin:'ajax-uploader'], "")
@@ -66,6 +65,9 @@ class AjaxUploaderTagLib {
         out << g.javascript([:], """
 			// Create a global variable containing the button text
 			var buttonText = '${attrs.buttonText ?: "Upload File(s)"}';
+			var jpg = 'jpg';
+			var jpeg = 'jpeg';
+			var pdf = 'pdf';
             var au_${currentUploaderUid} = new qq.FileUploader({
             element: document.getElementById('au-${currentUploaderUid}'),
             action: '${url}'"""+
@@ -116,6 +118,7 @@ class AjaxUploaderTagLib {
         List paramsBlock = []
 
         parameters.each { java.util.Map.Entry entry ->
+
             paramsBlock << """${entry.key}: ${entry.value instanceof String ? "'${entry.value}'" : entry.value }"""
         }
 
@@ -144,7 +147,7 @@ class AjaxUploaderTagLib {
     private validateAttribute(java.util.Map.Entry attribute) {
         List allowedValues = ALL_ATTRIBUTES[attribute.key].value as List
         String attributeValue = attribute.value as String
-        if (!(allowedValues).isEmpty()) {
+        if (!(allowedValues.isEmpty())) {
             if (!allowedValues.find { value -> value.toString() == attributeValue }) {
                 throw new InvalidAttributeValueException(attribute.key, attributeValue, allowedValues)
             }

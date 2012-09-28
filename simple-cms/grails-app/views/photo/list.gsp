@@ -23,11 +23,11 @@
 			<table>
 				<thead>
 					<tr>
-					
+					    <th>Select</th>
 						<g:sortableColumn property="originalFileName" title="${message(code: 'photo.originalFileName.label', default: 'Original File Name')}" />
 					
 						<g:sortableColumn property="artist" title="${message(code: 'photo.artist.label', default: 'Artist')}" />
-					
+					    <th>Date Created</th>
 						<th><g:message code="photo.width.label" default="Width" /></th>
                         <th><g:message code="photo.height.label" default="Height" /></th>
                         <th><g:message code="photo.image.label" default="Image" /></th>
@@ -38,10 +38,12 @@
 				<g:each in="${photoInstanceList}" status="i" var="photoInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
+                        <td><input type="checkbox" name="Select" value="select" onclick="selectOrDeselectPhoto(this, ${photoInstance.id})" /></td>
+					
 						<td><g:link action="edit" id="${photoInstance.id}">${fieldValue(bean: photoInstance, field: "originalFileName")}</g:link></td>
 					
 						<td>${fieldValue(bean: photoInstance, field: "artist")}</td>
-					
+					    <td>${fieldValue(bean: photoInstance, field: "dateCreated")}</td>
 						<td>${fieldValue(bean: photoInstance, field: "width")}</td>
 					
 						<td>${fieldValue(bean: photoInstance, field: "height")}</td>
@@ -54,6 +56,43 @@
 			<div class="pagination">
 				<g:paginate total="${photoInstanceTotal}" />
 			</div>
+			<input type='button' value='Delete' onclick="deleteSelectedPhotos();">
 		</div>
+		<script>
+		
+	    var photoIds = [];
+			
+	    function selectOrDeselectPhoto(checkbox, id) {
+	        if (checkbox.checked) {
+	            addPhotoId(id);
+	        } else {
+	            removePhotoId(id);
+	        }
+	    }
+
+	    function addPhotoId(id) {
+	    	photoIds.push(id);
+	    }
+
+	    function removePhotoId(id) {
+	        // Laziness because I can't be bothered figuring out how to remove an element from an array
+	        var newPhotoIds = [];
+	        for (var index in photoIds) {
+	            if (id != photoIds[index]) {
+	                newPhotoIds.push(photoIds[index]);
+	            }
+	        }
+	        photoIds = newPhotoIds;
+	    }
+
+	    function deleteSelectedPhotos() {
+		    console.log("deleting: " + photoIds);
+	        jQuery.ajax({type:'POST', data:{'photoIds': photoIds}, url:"<g:createLink controller='photo' action='deleteMultiplePhotos' />",
+		        success:function(data,textStatus){$('#resultsPhoto').html('<p>Success</p>'); },error:function(XMLHttpRequest,textStatus,errorThrown){$('#resultsPhoto').html('<p>Failure</p>'); }});
+	        return false;
+	    }	
+
+	    </script>
+	    <div id="resultsPhoto"></div>
 	</body>
 </html>

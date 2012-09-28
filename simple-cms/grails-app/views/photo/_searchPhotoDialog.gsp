@@ -17,7 +17,7 @@
         
         $("#dialog-form-photo").dialog({
             autoOpen: false,
-            height: 800,
+            height: 850,
             width: 600,
             modal: true,
             buttons: {

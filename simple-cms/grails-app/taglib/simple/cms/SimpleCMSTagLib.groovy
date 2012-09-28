@@ -34,14 +34,19 @@ class SimpleCMSTagLib {
 		def widget = attributes.widget
 		def photo = widget.photo
 		if (photo == null) {
-			// Should not happen but if it does, create a default photo and assign it
-			def serverURL = "http://mcdowellsonoran.org"
-			def imagePath = "images/default"
-			def gatewayBuilding = new SCMSPhoto(description: "Gateway Bulding", source: serverURL, path: imagePath, originalFileName: "Gateway Building.jpg", fileName: "Gateway Building.jpg", width: 5616, height: 3744, keywords: ["Gateway View default photo"], allKeywords: "default", artist: "Phil", copyright: "None")
-			gatewayBuilding.save(failOnError: true, flush: true)
-			SCMSPhoto.DEFAULT_PHOTO_ID = gatewayBuilding.id
-			widget.photo = gatewayBuilding
-			photo = gatewayBuilding
+			if (SCMSPhoto.DEFAULT_PHOTO_ID) {
+				def defaultPhoto = SCMSPhoto.get(SCMSPhoto.DEFAULT_PHOTO_ID)
+				if (defaultPhoto) {
+					photo = defaultPhoto
+				} else {
+					// Default photo not found - create one
+					photo = createDefaultPhoto() 
+				}
+			} else {
+				// DEFAULT_PHOTO_ID is null. Shouldn't happen but if it does, create a
+				// default photo 
+				photo = createDefaultPhoto()
+			}
 		}
 		def cssAttributes = new StringBuffer()
 		cssAttributes << "id='${widget.widgetId}Photo' "
@@ -128,6 +133,17 @@ class SimpleCMSTagLib {
 	
 	def showGallery(gallery, stream) {
 		stream << render(template: "/gallery/galleryContent", model: [gallery: gallery], plugin: "simple-cms")
+	}
+	
+	def createDefaultPhoto() {
+		println "Disaster! Had to create a default photo!"
+		// Should not happen but if it does, create a default photo and assign it
+		def serverURL = "http://mcdowellsonoran.org"
+		def imagePath = "images/default"
+		def gatewayBuilding = new SCMSPhoto(description: "Gateway Building", source: serverURL, path: imagePath, originalFileName: "Gateway Building.jpg", fileName: "Gateway Building.jpg", width: 5616, height: 3744, keywords: ["Gateway View default photo"], allKeywords: "default", artist: "Phil", copyright: "None")
+		gatewayBuilding.save(failOnError: true, flush: true)
+		SCMSPhoto.DEFAULT_PHOTO_ID = gatewayBuilding.id
+		gatewayBuilding
 	}
 
 }
