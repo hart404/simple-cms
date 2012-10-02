@@ -21,14 +21,14 @@
     <label for="uri">
         <g:message code="SCMSPage.descriptionmetadata.label" default="Description Metadata" />
     </label>
-    <g:textField name="descriptionMetadata" maxlength="120" size="120" value="${pageInstance?.descriptionMetadata}"/>
+    <g:textField name="descriptionMetadata" maxlength="156" size="120" value="${pageInstance?.descriptionMetadata}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'keywordsMetadata', 'error')}">
     <label for="uri">
         <g:message code="SCMSPage.keywordsmetadata.label" default="Keywords Metadata" />
     </label>
-    <g:textField name="keywordsMetadata" maxlength="120" size="120" value="${pageInstance?.keywordsMetadata}"/>
+    <g:textField name="keywordsMetadata" maxlength="2047" size="120" value="${pageInstance?.keywordsMetadata}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'template', 'error')} required">

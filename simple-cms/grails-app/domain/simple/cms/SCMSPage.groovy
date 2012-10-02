@@ -10,7 +10,7 @@ class SCMSPage extends SCMSStaticPage {
     static constraints = {
 		title(nullable: false, size: 5..100)
 		template(nullable: false)
-		descriptionMetadata(nullable: true, size: 0..2048)
+		descriptionMetadata(nullable: true, size: 0..156)
 		keywordsMetadata(nullable: true, size: 0..2048)
     }
 	
