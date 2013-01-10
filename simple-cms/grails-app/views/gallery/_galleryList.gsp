@@ -10,8 +10,8 @@
 			</g:else> 
 			${photoWidget.photo.shortenedFileName()} - ${photoWidget.photo.width}x${photoWidget.photo.height}
 			<input type="text" name="Caption" value="${photoWidget.caption}" id="caption${photoWidget.id}" /> 
-			<input type="button" name="Update" value="update" onclick="updateGalleryPhotoWidgetCaption($('#caption${photoWidget.id}').val(), ${photoWidget.id})" /> 
-			<input type="button" name="Remove" value="remove" onclick="removeGalleryPhotoWidget(${gallery.id}, ${photoWidget.id})" /></li>
+			<input type="button" name="Update" value="Update Caption" onclick="updateGalleryPhotoWidgetCaption($('#caption${photoWidget.id}').val(), ${photoWidget.id})" /> 
+			<input type="button" name="Remove" value="Remove Photo" onclick="removeGalleryPhotoWidget(${gallery.id}, ${photoWidget.id})" /></li>
 	</g:each>
 	    <g:if test="${photoWidgets.size() > 0}">
 		  <g:set var="totalPages" value="${Math.ceil(total / max) as Integer}" />

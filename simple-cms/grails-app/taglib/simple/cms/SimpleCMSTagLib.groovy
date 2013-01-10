@@ -58,17 +58,22 @@ class SimpleCMSTagLib {
 		if (attributes.width && attributes.height) {
 			def width = attributes.width as Integer
 			def height = attributes.height as Integer
+			out << "<img src='${photo.fullPath()}' height='${height}' width='${width}' style='display: none;'>"
 			styleAttributes << "width: ${width}px; height: ${height}px; "
 		}
 		// Only width specified
 		if (attributes.width && !attributes.height) {
 			def width = attributes.width as Integer
-			styleAttributes << "width: ${width}px; height: ${photo.height * (width / photo.width)}px; "
+			def height = photo.height * (width / photo.width)
+			out << "<img src='${photo.fullPath()}' height='${height}' width='${width}' style='display: none;'>"
+			styleAttributes << "width: ${width}px; height: ${height}px; "
 		}		
 		// Only height specified
 		if (!attributes.width && attributes.height) {
 			def height = attributes.height as Integer
-			styleAttributes << "width: ${photo.width * (height / photo.height)}px; height: ${height}px; "
+			def width = photo.width * (height / photo.height)
+			out << "<img src='${photo.fullPath()}' height='${height}' width='${width}' style='display: none;'>"
+			styleAttributes << "width: ${width}px; height: ${height}px; "
 		}
 		def backgroundImage = "${photo.fullPath()}"
 		cssAttributes << "style='background-image: url(\"${backgroundImage}\"); background-size: cover; ${styleAttributes.toString()}'"

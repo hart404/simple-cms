@@ -3,7 +3,7 @@
 <meta name="layout" content="mainLayout">
 <meta name="description" content="${page.descriptionMetadata}" />
 <meta name="keywords" content="${page.keywordsMetadata}" />
-<title>${title}</title>
+<title>${page.title}</title>
 </head>
 <body>
 	<div class="generalContainer">

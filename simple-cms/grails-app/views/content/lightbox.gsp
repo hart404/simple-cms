@@ -3,7 +3,7 @@
 <meta name="layout" content="contentSidebarLayout">
 <meta name="description" content="${page.descriptionMetadata}" />
 <meta name="keywords" content="${page.keywordsMetadata}" />
-<title>${title}</title>
+<title>${page.title}</title>
 <link rel="stylesheet" href="<g:createLinkTo dir='/js/lightbox/css' file='lightbox.css'/>" type="text/css"/>
 <script type="text/javascript" src="<g:createLinkTo dir='/js/lightbox/js' file='lightbox.js'/>"></script>
 </head>
