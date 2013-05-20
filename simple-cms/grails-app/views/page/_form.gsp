@@ -39,3 +39,9 @@
 	<g:select id="template" name="template.id" from="${simple.cms.SCMSPageTemplate.list()}" optionKey="id" required="" value="${pageInstance?.template?.id}" class="many-to-one"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: pageInstance, field: 'canBeEditedByLeader', 'error')} ">
+    <label for="canBeEditedByLeader">
+        <g:message code="person.canBeEditedByLeader.label" default="Can be edited by CLT" />        
+    </label>
+    <g:checkBox name="canBeEditedByLeader" value="${pageInstance?.canBeEditedByLeader}" />
+</div>

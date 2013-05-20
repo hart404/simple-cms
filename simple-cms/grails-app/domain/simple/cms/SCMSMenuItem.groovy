@@ -31,7 +31,8 @@ class SCMSMenuItem {
 	} 
 	
 	static mapping = {
-		roles(lazy: false)
+		roles(lazy: false, cache: true)
+		cache: true
 	}
 	
 	boolean menuIsAllowed() {
@@ -70,6 +71,4 @@ class SCMSMenuItem {
 		// Do nothing for menu items
 	}
 
-
-	
 }

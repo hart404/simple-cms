@@ -28,8 +28,8 @@
 					
 						<g:sortableColumn property="artist" title="${message(code: 'photo.artist.label', default: 'Artist')}" />
 					    <th>Date Created</th>
-						<th><g:message code="photo.width.label" default="Width" /></th>
-                        <th><g:message code="photo.height.label" default="Height" /></th>
+                        <g:sortableColumn property="width" title="${message(code: 'photo.width.label', default: 'Width')}" />
+                        <g:sortableColumn property="height" title="${message(code: 'photo.height.label', default: 'Height')}" />
                         <th><g:message code="photo.image.label" default="Image" /></th>
 										
 					</tr>
@@ -56,7 +56,9 @@
 			<div class="pagination">
 				<g:paginate total="${photoInstanceTotal}" />
 			</div>
+			<sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_WEB,ROLE_STAFF">
 			<input type='button' value='Delete' onclick="deleteSelectedPhotos();">
+			</sec:ifAnyGranted>
 		</div>
 		<script>
 		

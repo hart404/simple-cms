@@ -29,7 +29,7 @@
 				<g:hiddenField name="id" value="${menuBarInstance?.id}" />
 				<g:hiddenField name="version" value="${menuBarInstance?.version}" />
 				<fieldset class="form">
-					<g:render template="form"/>
+					<g:render template="form" plugin="simple-cms"/>
 				</fieldset>
 			</g:form>
 		</div>

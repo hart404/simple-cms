@@ -38,11 +38,13 @@ class PhotoController {
 	}
 
 	def upload = {
+		println "Uploading ${params.qqfile}"
 		try {
 			createUploadDirectory()
 			File uploaded = createTemporaryFile()
 			InputStream inputStream = selectInputStream(request)
 			uploadFile(inputStream, uploaded)
+			println "Calling createPhotoForFile ${uploaded.name} ${params.qqfile}"
 			createPhotoForFile(uploaded, DEFAULT_S3_SOURCE, DEFAULT_PATH, uploaded.name, params.qqfile)
 			transferFileToS3(uploaded)
 			return render(text: [success:true] as JSON, contentType:'text/json')
@@ -89,7 +91,7 @@ class PhotoController {
 		return uploaded
 	}
 
-	private  void uploadFile(InputStream inputStream, File file) {
+	private void uploadFile(InputStream inputStream, File file) {
 		try {
 			file << inputStream
 		} catch (Exception e) {
@@ -103,12 +105,19 @@ class PhotoController {
 		addJPEGItems(metadataMap, metadata)
 		addEXIFItems(metadataMap, metadata)
 		addIPTCItems(metadataMap, metadata)
+		// Add the file name parts to the keywords
+		def parts = originalFileName.tokenize(".")
+		parts.each { part ->
+			metadataMap["allKeywords"] += " ${part} "
+		}
+		println "All Keywords: ${metadataMap['allKeywords']}"
+		println "Keywords: ${metadataMap['keywords']}"
 		def photo = new SCMSPhoto(metadataMap)
 		photo.source = sourceURL
 		photo.path = path
 		photo.fileName = fileName
 		photo.originalFileName = originalFileName
-		def savedPhoto = photo.save()
+		def savedPhoto = photo.save() 
 		if (savedPhoto == null) {
 			log.error("Problem uploading photo: ${photo.originalFileName}, ${photo.allKeywords}")
 			photo.errors.allErrors.each {
@@ -127,7 +136,7 @@ class PhotoController {
 		Directory directory = metadata?.getDirectory(ExifIFD0Directory.class)
 		metadataMap["artist"] = directory?.getString(ExifIFD0Directory.TAG_ARTIST) ?: "No Artist"
 		String copyright = directory?.getString(ExifIFD0Directory.TAG_COPYRIGHT)
-		if (copyright == null) {
+		if (copyright == null || copyright.size() == 0) {
 			copyright = "No copyright"
 		} else {
 			copyright = copyright[1..-1] 
@@ -160,8 +169,6 @@ class PhotoController {
 	
 	def list() {
 		params.max = Math.min(params.max ? params.int('max') : 20, 100)
-		params.sort = "originalFileName"
-		params.order = "asc"
 		[photoInstanceList: SCMSPhoto.list(params), photoInstanceTotal: SCMSPhoto.count()]
 	}
 	

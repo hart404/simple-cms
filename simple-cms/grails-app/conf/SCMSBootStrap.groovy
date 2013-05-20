@@ -1,7 +1,7 @@
+import simple.cms.SCMSDocumentWidgetCreator
 import simple.cms.SCMSGalleryWidgetCreator
 import simple.cms.SCMSHTMLWidgetCreator
 import simple.cms.SCMSLightboxWidgetCreator
-import simple.cms.SCMSMenuBar
 import simple.cms.SCMSPageTemplate
 import simple.cms.SCMSPhoto
 import simple.cms.SCMSPhotoWidgetCreator
@@ -26,6 +26,18 @@ Intended for the 'People' page. Contains an HTML widget, 2 photo widgets and 2 g
 Has no sidebar navigation and contains only one HTML widget.
 """
 
+	static final String PLAIN_DESCRIPTION = """
+Contains only one HTML widget.
+"""
+
+	static final String DOCUMENT_DESCRIPTION = """
+Contains only one HTML widget and a Document widget.
+"""
+
+	static final String DOCUMENT_PHOTO_DESCRIPTION = """
+Contains only one HTML widget, a Document widget and two Photo widgets.
+"""
+
 	def init = { servletContext ->
 		createDefaultPhoto()
 		createPageTemplates()
@@ -39,6 +51,9 @@ Has no sidebar navigation and contains only one HTML widget.
 		createLightbox()
 		createGallery()
 		createNoSidebar()
+		createPlain()
+		createDocument()
+		createDocumentPhoto()
 	}
 	
 	def createStandard() {
@@ -77,10 +92,8 @@ Has no sidebar navigation and contains only one HTML widget.
 	}
 	
 	def createDefaultPhoto() {
-		def defaultPhotos = SCMSPhoto.findAllBySource("http://new.mcdowellsonoran.org")
-		println "There are ${defaultPhotos.size()} Gateway Buildings..."
+		def defaultPhotos = SCMSPhoto.findAllBySource("http://mcdowellsonoran.org")
 		def defaultPhoto = SCMSPhoto.findByDescription("Gateway Building")
-		println "Default photo: ${defaultPhoto}"
 		if (defaultPhoto == null) {
 			def serverURL = "http://mcdowellsonoran.org"
 			def imagePath = "images/default"
@@ -124,5 +137,48 @@ Has no sidebar navigation and contains only one HTML widget.
 			galleryTemplate.save(failOnError: true)
 		}
 	}
+	
+	def createPlain() {
+		def plainTemplate = SCMSPageTemplate.findByName("Plain")
+		if (plainTemplate == null) {
+			plainTemplate = new SCMSPageTemplate(
+				name: "Plain",
+				description: PLAIN_DESCRIPTION,
+				associatedGSP: "plain.gsp"
+			)
+			plainTemplate.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
+			plainTemplate.save(failOnError: true)
+		}
+	}
 		
+	def createDocument() {
+		def documentTemplate = SCMSPageTemplate.findByName("Document")
+		if (documentTemplate == null) {
+			documentTemplate = new SCMSPageTemplate(
+				name: "Document",
+				description: DOCUMENT_DESCRIPTION,
+				associatedGSP: "document.gsp"
+			)
+			documentTemplate.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
+			documentTemplate.addToWidgetCreators(new SCMSDocumentWidgetCreator(widgetId: "document1"))
+			documentTemplate.save(failOnError: true)
+		}
+	}
+	
+	def createDocumentPhoto() {
+		def documentPhotoTemplate = SCMSPageTemplate.findByName("Document Photo")
+		if (documentPhotoTemplate == null) {
+			documentPhotoTemplate = new SCMSPageTemplate(
+				name: "Document Photo",
+				description: DOCUMENT_PHOTO_DESCRIPTION,
+				associatedGSP: "documentPhoto.gsp"
+			)
+			documentPhotoTemplate.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
+			documentPhotoTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
+			documentPhotoTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo2"))
+			documentPhotoTemplate.addToWidgetCreators(new SCMSDocumentWidgetCreator(widgetId: "document1"))
+			documentPhotoTemplate.save(failOnError: true)
+		}
+	}
+	
 }

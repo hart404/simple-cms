@@ -11,7 +11,7 @@ class SCMSPhotoWidget extends SCMSWidget {
     }
 	
 	static mapping = {
-		photo cascade: 'all'
+		photo cascade: 'all', cache: true
 	}
 	
 }

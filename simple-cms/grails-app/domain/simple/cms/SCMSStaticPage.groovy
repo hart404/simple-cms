@@ -5,6 +5,8 @@ import java.util.List;
 class SCMSStaticPage {
 
 	String link
+	Boolean canBeEditedByLeader
+	static SCMSStaticPage currentPage
 	
 	List<SCMSWidget> widgets
 	static hasMany = [

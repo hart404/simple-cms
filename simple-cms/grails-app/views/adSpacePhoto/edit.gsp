@@ -32,7 +32,7 @@
 				<g:hiddenField name="id" value="${adSpacePhotoInstance?.id}" />
 				<g:hiddenField name="version" value="${adSpacePhotoInstance?.version}" />
 				<fieldset class="form">
-					<g:render template="form"/>
+					<g:render template="form" plugin="simple-cms"/>
 				</fieldset>
 				<fieldset class="buttons">
 					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />

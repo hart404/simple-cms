@@ -31,7 +31,7 @@
 				<g:hiddenField name="id" value="${pageInstance?.id}" />
 				<g:hiddenField name="version" value="${pageInstance?.version}" />
 				<fieldset class="form">
-					<g:render template="form"/>
+					<g:render template="form" plugin="simple-cms"/>
 				</fieldset>
 				<fieldset class="buttons">
 					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />

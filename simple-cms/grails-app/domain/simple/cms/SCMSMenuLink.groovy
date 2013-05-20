@@ -10,4 +10,8 @@ class SCMSMenuLink {
 		link(nullable: false)
 	}
 	
+	static mapping = {
+		cache: 'non-strict-read-write'
+	}
+	
 }

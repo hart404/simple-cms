@@ -24,7 +24,12 @@ class PageController {
         def pageInstance = new SCMSPage(params)
 		pageInstance.generateWidgets()
 		pageInstance.link = params.link
-        if (!pageInstance.save(flush: true)) {
+		if (params['canBeEditedByLeader'] == "on") {
+			pageInstance.canBeEditedByLeader = true
+		} else {
+			pageInstance.canBeEditedByLeader = false
+		}
+        if (!pageInstance.save(failOnError: true, flush: true)) {
             render(view: "create", model: [pageInstance: pageInstance])
             return
         }
@@ -74,6 +79,11 @@ class PageController {
         }
 
         pageInstance.properties = params
+		if (params['canBeEditedByLeader'] == "on") {
+			pageInstance.canBeEditedByLeader = true
+		} else {
+			pageInstance.canBeEditedByLeader = false
+		}
 		// Ensures that any necessary widgets are created if the template is changed
 		pageInstance.generateWidgets()
 

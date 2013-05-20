@@ -26,11 +26,12 @@ class ContentController {
 			}
 			def menuLink = SCMSMenuLink.findByLink(baseURI)
 			if (menuLink == null) {
-				println "Disaster! No menuLink found for: ${baseURI}"
+				log.debug("Disaster! No menuLink found for: ${baseURI}")
 			} else {
 				widgets.menu = menuLink.menu
 			}
 			widgets.page = page
+			SCMSStaticPage.currentPage = page
 			widgets.link = baseURI.stripMargin("/")
 			render(view: template.associatedGSP, model: widgets)
 		}

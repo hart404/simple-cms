@@ -1,37 +1,29 @@
 package simple.cms
 
-/*
- * Note: the URL for the photo is source + path + fileName
- */
-class SCMSPhoto {
-	
-	static searchable = [only: ['keywords', 'allKeywords', 'artist', 'source', 'path', 'fileName', 'originalFileName', 'usageRights', 'width', 'height', 'description']]
-	
-	static Long DEFAULT_PHOTO_ID
+import java.util.Date;
+import java.util.List;
+
+class SCMSDocument {
+	static searchable = [only: ['keywords', 'allKeywords', 'source', 'path', 'fileName', 'originalFileName', 'description']]
 	
 	List<String> keywords
 	String allKeywords
-	String artist
-	String copyright
 	String description
-	int height
-	int width
 	String source
 	String path
 	String fileName
 	String originalFileName
 	Date dateCreated
-	String usageRights
+	Date lastUpdated
 
-    static constraints = {
+	static constraints = {
 		source(nullable: false)
 		fileName(nullable: false)
 		path(nullable: false)
-		artist(nullable: true)
-		copyright(nullable: true)
 		description(nullable: true, size: 0..2000)
-		usageRights(nullable: true)
-    }
+		keywords(nullable: true)
+		allKeywords(nullable: true)
+	}
 	
 	static mapping = {
 		allKeywords type: "text"
@@ -45,7 +37,7 @@ class SCMSPhoto {
 	}
 	
 	String toString() {
-		"File: ${originalFileName} width: ${width} height: ${height} keywords: ${keywords}"
+		"File: ${originalFileName} keywords: ${keywords}"
 	}
 	
 	String shortenedFileName() {
@@ -54,4 +46,5 @@ class SCMSPhoto {
 		}
 		return originalFileName
 	}
+
 }

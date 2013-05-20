@@ -12,7 +12,8 @@ class SCMSMenu extends SCMSMenuItem {
 	}
 	
 	static mapping = {
-		menuItems(cascade: "all, delete-orphan", lazy: false)
+		menuItems(cascade: "all, delete-orphan", lazy: false, cache: true)
+		cache: true
 	}
 	
 	def render(level, lastItem) {
@@ -54,7 +55,6 @@ class SCMSMenu extends SCMSMenuItem {
 			def menuLink = SCMSMenuLink.findByLink(canonicalLink())
 			if (menuLink == null) {
 				menuLink = new SCMSMenuLink(menu: this, link: canonicalLink())
-				println "Creating menu link for: ${canonicalLink()}"
 				menuLink.save(failOnError: true)
 			}
 		}
@@ -66,7 +66,6 @@ class SCMSMenu extends SCMSMenuItem {
 					def menuItemLink = SCMSMenuLink.findByLink(menuItem.canonicalLink())
 					if (menuItemLink == null) {
 						menuItemLink = new SCMSMenuLink(menu: this, link: menuItem.canonicalLink())
-						println "Creating menu link for: ${canonicalLink()}"
 						menuItemLink.save(failOnError: true)
 					}
 				}

@@ -18,7 +18,7 @@ class SimpleCMSTagLib {
 		}
 		out << widget.htmlText << "\n"
 		out << "</div>" << "\n"
-		if (SpringSecurityUtils.ifAnyGranted("ROLE_WEB,ROLE_ADMIN")) {
+		if (pageCanBeEdited()) {
 			out << "<div class='scmsButtons'>" << "\n"
 			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"createEditorForHTMLWidget('" << widget.widgetId << "', " << widget.id << ", 'html');\">Edit</button>" << "\n"
 			out << "</div>" << "\n"
@@ -78,7 +78,7 @@ class SimpleCMSTagLib {
 		def backgroundImage = "${photo.fullPath()}"
 		cssAttributes << "style='background-image: url(\"${backgroundImage}\"); background-size: cover; ${styleAttributes.toString()}'"
 		out << "<div ${cssAttributes.toString()}>\n"
-		if (SpringSecurityUtils.ifAnyGranted("ROLE_WEB,ROLE_ADMIN")) {
+		if (pageCanBeEdited()) {
 			out << "<button class=\"scmsButton\" type=\"button\" onClick='editPhotoWidgetPhoto(${widget.id});' style='clear: both;'>Edit Photo</button>" << "\n"
 		}
 		out << "</div>\n" 
@@ -92,7 +92,7 @@ class SimpleCMSTagLib {
 				out << "<div id='${widget.widgetId}Caption'>${widget.caption}"
 			}
 			out << "</div>\n"
-			if (SpringSecurityUtils.ifAnyGranted("ROLE_WEB,ROLE_ADMIN")) {
+			if (pageCanBeEdited()) {
 				out << "<div><button class=\"scmsButton\" type=\"button\" onclick=\"createEditorForPhotoCaption('" << widget.widgetId << "Caption', " << widget.id << ", 'caption');\">Edit Caption</button>" << "</div>\n"
 			}			
 		}
@@ -107,7 +107,7 @@ class SimpleCMSTagLib {
 		}
 		showLightbox(widget, out)
 		out << "</div>" << "\n"
-		if (SpringSecurityUtils.ifAnyGranted("ROLE_WEB,ROLE_ADMIN")) {
+		if (pageCanBeEdited()) {
 			out << "<div class='scmsButtons'>" << "\n"
 			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"openLightboxUpdate(" << widget.id << ");\">Edit</button>" << "\n"
 			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"editLinkPhoto(" << widget.id << ");\">Edit Link Photo</button>" << "\n"
@@ -128,7 +128,7 @@ class SimpleCMSTagLib {
 		}
 		showGallery(widget, out)
 		out << "</div>" << "\n"
-		if (SpringSecurityUtils.ifAnyGranted("ROLE_WEB,ROLE_ADMIN")) {
+		if (pageCanBeEdited()) {
 			out << "<div class='scmsButtons'>" << "\n"
 			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"openGalleryUpdate(" << widget.id << ");\">Edit Gallery</button>" << "\n"
 			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"editGalleryTitle(" << widget.id << ", \'title${widget.widgetId}\');\">Edit Gallery Title</button>" << "\n"
@@ -149,6 +149,32 @@ class SimpleCMSTagLib {
 		gatewayBuilding.save(failOnError: true, flush: true)
 		SCMSPhoto.DEFAULT_PHOTO_ID = gatewayBuilding.id
 		gatewayBuilding
+	}
+	
+	def documentWidget = { attributes, body ->
+		def widget = attributes.widget
+		if (widget.cssClass) {
+			out << "<div class='${widget.cssClass}' id='${widget.widgetId}'>" << "\n"
+		} else {
+			out << "<div id='${widget.widgetId}'>" << "\n"
+		}
+		showDocumentWidget(widget, out)
+		out << "</div>" << "\n"
+		if (pageCanBeEdited()) {
+			out << "<div class='scmsButtons'>" << "\n"
+			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"openDocumentWidgetUpdate(" << widget.id << ");\">Edit Documents</button>" << "\n"
+			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"editDocumentWidgetTitle(" << widget.id << ", \'title${widget.widgetId}\');\">Edit Documents Title</button>" << "\n"
+			out << "</div>" << "\n"
+		}
+	}
+	
+	def showDocumentWidget(widget, stream) {
+		stream << render(template: "/document/documentWidgetContent", model: [documentWidget: widget], plugin: "simple-cms")
+	}
+	
+	def pageCanBeEdited() {
+		if (SpringSecurityUtils.ifAnyGranted("ROLE_WEB,ROLE_ADMIN")) return true;
+		return SpringSecurityUtils.ifAnyGranted("ROLE_LEADER") && SCMSStaticPage.currentPage.canBeEditedByLeader
 	}
 
 }

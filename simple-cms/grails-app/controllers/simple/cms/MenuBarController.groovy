@@ -101,7 +101,6 @@ class MenuBarController {
     }
 	
 	def addMenu() {
-		println "Adding menu to menu bar"
 		def menuBar = SCMSMenuBar.get(params.id)
 		def menu = new SCMSMenu()
 		menu.title = params.title
@@ -110,15 +109,11 @@ class MenuBarController {
 		if (roles) {
 			menu.roles = roles
 		}
-		println params
 		menu.save(failOnError: true, flush: true)
-		println "Saved menu"
 		menuBar.addToMenus(menu)
 		menuBar.save(failOnError: true, flush: true)
-		println "Saved menu bar"
 		def menuLink = new SCMSMenuLink(menu: menu, link: menu.canonicalLink())
 		menuLink.save(failOnError: true, flush: true)
-		println "Save menu link"
 		render(template: '/layouts/updated')
 	}
 

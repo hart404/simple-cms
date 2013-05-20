@@ -11,10 +11,8 @@ class PhotoService {
 		defaultPhotos.reverse().each { gateway ->
 			try {
 				gateway.delete(flush: true)
-				println "Deleted a Gateway"
 			}
 			catch (DataIntegrityViolationException e) {
-				println("Unable to delete a Gateway: ${e}")
 			}
 			catch (Exception e) {
 				println("Unable to delete a Gateway with other exception: ${e}")
@@ -26,18 +24,14 @@ class PhotoService {
 	def deleteIndividualPhoto(id) {
 		def photoInstance = SCMSPhoto.get(id)
 		if (!photoInstance) {
-			println "Could not delete photo id ${id} because it wasn't found"
 			return
 		}
 		try {
 			photoInstance.delete(flush: true)
-			println "Deleted photo id ${id} "
 		}
 		catch (DataIntegrityViolationException e) {
 			println "Could not delete photo id ${id} because it is in use"
 		}
 	}
-	
-
 
 }

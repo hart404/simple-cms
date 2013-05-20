@@ -20,5 +20,9 @@ class SCMSAdSpacePhoto {
 		displayEndDate(nullable: false)
 		link(nullable: false)
 	}
+	
+	static mapping = {
+		cache: 'non-strict-read-write'
+	}
 
 }

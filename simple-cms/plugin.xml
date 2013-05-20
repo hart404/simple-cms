@@ -1,4 +1,4 @@
-<plugin name='simple-cms' version='0.1' grailsVersion='2.1.0 &gt; *'>
+<plugin name='simple-cms' version='0.1' grailsVersion='2.2.1 &gt; *'>
   <author>Phil Hartley</author>
   <authorEmail>hart404@gmail.com</authorEmail>
   <title>Simple CMS Plugin</title>
@@ -11,6 +11,7 @@
     <resource>SCMSUrlMappings</resource>
     <resource>simple.cms.AdSpacePhotoController</resource>
     <resource>simple.cms.ContentController</resource>
+    <resource>simple.cms.DocumentController</resource>
     <resource>simple.cms.GalleryController</resource>
     <resource>simple.cms.LightboxController</resource>
     <resource>simple.cms.MenuBarController</resource>
@@ -21,6 +22,9 @@
     <resource>simple.cms.PhotoController</resource>
     <resource>simple.cms.WidgetController</resource>
     <resource>simple.cms.SCMSAdSpacePhoto</resource>
+    <resource>simple.cms.SCMSDocument</resource>
+    <resource>simple.cms.SCMSDocumentWidget</resource>
+    <resource>simple.cms.SCMSDocumentWidgetCreator</resource>
     <resource>simple.cms.SCMSGalleryWidget</resource>
     <resource>simple.cms.SCMSGalleryWidgetCreator</resource>
     <resource>simple.cms.SCMSHTMLWidget</resource>
@@ -43,6 +47,7 @@
     <resource>simple.cms.SCMSStaticPage</resource>
     <resource>simple.cms.SCMSWidget</resource>
     <resource>simple.cms.SCMSWidgetCreator</resource>
+    <resource>simple.cms.DocumentWidgetService</resource>
     <resource>simple.cms.GalleryService</resource>
     <resource>simple.cms.LightboxService</resource>
     <resource>simple.cms.MenuService</resource>
@@ -53,7 +58,6 @@
   </resources>
   <repositories>
     <repository name='grailsCentral' url='http://grails.org/plugins' />
-    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
     <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
     <repository name='http://snapshots.repository.codehaus.org' url='http://snapshots.repository.codehaus.org/' />
     <repository name='http://repository.codehaus.org' url='http://repository.codehaus.org/' />
@@ -80,34 +84,39 @@
     </runtime>
   </dependencies>
   <plugins>
+    <compile>
+      <plugin group='org.grails.plugins' name='codenarc' version='0.18.1' />
+    </compile>
     <runtime>
-      <plugin group='org.grails.plugins' name='feeds' version='1.5' />
-      <plugin group='org.grails.plugins' name='quartz' version='1.0-RC2' />
-      <plugin group='org.grails.plugins' name='ckeditor' version='3.6.3.0' />
-      <plugin group='org.grails.plugins' name='resources' version='1.2-RC1' />
-      <plugin group='org.grails.plugins' name='cache-headers' version='1.1.5' />
       <plugin group='org.grails.plugins' name='cloud-support' version='1.0.11' />
-      <plugin group='org.grails.plugins' name='famfamfam' version='1.0.1' />
-      <plugin group='org.grails.plugins' name='joda-time' version='1.4' />
-      <plugin group='org.grails.plugins' name='taggable' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='searchable' version='0.6.4' />
       <plugin group='org.grails.plugins' name='richui' version='0.8' />
-      <plugin group='org.grails.plugins' name='jquery' version='1.7.2' />
-      <plugin group='org.grails.plugins' name='mail' version='1.0' />
-      <plugin group='org.grails.plugins' name='csv' version='0.3.1' />
-      <plugin group='org.grails.plugins' name='navigation' version='1.3.2' />
-      <plugin group='org.grails.plugins' name='database-migration' version='1.1' />
-      <plugin group='org.grails.plugins' name='google-visualization' version='0.5.4' />
-      <plugin group='org.grails.plugins' name='cloud-foundry' version='1.2.3' />
-      <plugin group='org.grails.plugins' name='google-analytics' version='2.0' />
-      <plugin group='org.grails.plugins' name='hibernate' version='2.1.0' />
-      <plugin group='org.grails.plugins' name='bean-fields' version='1.0.RC5' />
-      <plugin group='org.grails.plugins' name='spring-security-ui' version='0.2' />
-      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.6.1' />
-      <plugin group='org.grails.plugins' name='searchable' version='0.6.3' />
-      <plugin group='org.grails.plugins' name='breadcrumbs' version='0.5.2' />
       <plugin group='org.grails.plugins' name='yui' version='2.8.2.1' />
       <plugin group='org.grails.plugins' name='cloud-foundry-ui' version='1.1' />
       <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.3' />
+      <plugin group='org.grails.plugins' name='quartz' version='1.0-RC6' />
+      <plugin group='org.grails.plugins' name='spring-security-ui' version='0.2' />
+      <plugin group='org.grails.plugins' name='feeds' version='1.5' />
+      <plugin group='org.grails.plugins' name='cache-headers' version='1.1.5' />
+      <plugin group='org.grails.plugins' name='profiler' version='0.4' />
+      <plugin group='org.grails.plugins' name='google-analytics' version='2.0' />
+      <plugin group='org.grails.plugins' name='taggable' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='joda-time' version='1.4' />
+      <plugin group='org.grails.plugins' name='miniprofiler' version='0.1' />
+      <plugin group='org.grails.plugins' name='ckeditor' version='3.6.3.0' />
+      <plugin group='org.grails.plugins' name='breadcrumbs' version='0.5.2' />
+      <plugin group='org.grails.plugins' name='resources' version='1.2.RC2' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='database-migration' version='1.3.2' />
+      <plugin group='org.grails.plugins' name='jquery' version='1.7.2' />
+      <plugin group='org.grails.plugins' name='cloud-foundry' version='1.2.3' />
+      <plugin group='org.grails.plugins' name='navigation' version='1.3.2' />
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.6.1' />
+      <plugin group='org.grails.plugins' name='bean-fields' version='1.0.RC5' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.2.1' />
+      <plugin group='org.grails.plugins' name='csv' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='google-visualization' version='0.6.1' />
+      <plugin group='org.grails.plugins' name='famfamfam' version='1.0.1' />
     </runtime>
   </plugins>
   <runtimePluginRequirements />

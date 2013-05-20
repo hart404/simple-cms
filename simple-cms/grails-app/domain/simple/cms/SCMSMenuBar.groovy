@@ -15,7 +15,8 @@ class SCMSMenuBar {
 	}
 	
 	static mapping = {
-		menus(cascade: "all, delete-orphan", lazy: false)
+		menus(cascade: "all, delete-orphan", lazy: false, cache: true)
+		cache: true
 	}
 	
 	def render() {

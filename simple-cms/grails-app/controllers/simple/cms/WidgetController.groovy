@@ -24,5 +24,5 @@ class WidgetController {
 			["result": "success"]
 		}
 	}
-
+	
 }
