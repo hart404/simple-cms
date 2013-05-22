@@ -16,5 +16,9 @@ class SCMSDocumentWidget extends SCMSWidget {
 		documents cascade: 'all'
 		cache: true
 	}
+	
+	def sortedDocuments() {
+		documents.sort { it.description}
+	}
 
 }
