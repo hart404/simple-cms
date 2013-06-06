@@ -33,7 +33,7 @@
 
     function removeDocumentWidgetDocument(documentWidgetId, documentId) {
         jQuery.ajax({type:'POST', data:{'id': documentWidgetId, 'documentId': documentId}, url:"<g:createLink controller='document'
-            action='deleteDocument' />", success:function(data,textStatus){}, error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}}); 
+            action='deleteDocument' />", success:function(data,textStatus){jQuery('#documentWidgetDocuments').html(data);}, error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}}); 
         getDocumentWidgetDocuments(documentWidgetId, 0, 5);   
     }
         
@@ -51,8 +51,7 @@
 
     function updateDocumentWidgetDocumentIds() {
     	jQuery.ajax({type:'POST', data:{'documentIds': documentWidgetDocumentIds, 'id': documentWidgetId}, url:"<g:createLink controller='document'
-            action='updateDocumentWidgetDocumentIds' />",success:function(data,textStatus){},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
-    	getDocumentWidgetDocuments(documentWidgetId, 0, 5);
+            action='updateDocumentWidgetDocumentIds' />",success:function(data,textStatus){jQuery('#documentWidgetDocuments').html(data);},error:function(XMLHttpRequest,textStatus,errorThrown){console.log(errorThrown)}});
     }
 
     function addDocumentWidgetDocumentId(id) {

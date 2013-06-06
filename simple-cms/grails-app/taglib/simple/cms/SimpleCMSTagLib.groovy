@@ -158,14 +158,19 @@ class SimpleCMSTagLib {
 		} else {
 			out << "<div id='${widget.widgetId}'>" << "\n"
 		}
-		showDocumentWidget(widget, out)
+		showDocumentWidgetTitle(widget, out)
 		out << "</div>" << "\n"
+		showDocumentWidget(widget, out)
 		if (pageCanBeEdited()) {
 			out << "<div class='scmsButtons'>" << "\n"
 			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"openDocumentWidgetUpdate(" << widget.id << ");\">Edit Documents</button>" << "\n"
-			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"editDocumentWidgetTitle(" << widget.id << ", \'title${widget.widgetId}\');\">Edit Documents Title</button>" << "\n"
+			out << "<button class=\"scmsButton\" type=\"button\" onclick=\"editDocumentWidgetTitle(" << widget.id << ", \'${widget.widgetId}\');\">Edit Documents Title</button>" << "\n"
 			out << "</div>" << "\n"
 		}
+	}
+	
+	def showDocumentWidgetTitle(widget, stream) {
+		stream << render(template: "/document/documentWidgetTitle", model: [documentWidget: widget], plugin: "simple-cms")
 	}
 	
 	def showDocumentWidget(widget, stream) {

@@ -191,7 +191,7 @@ class DocumentController {
 		document.originalFileName = originalFileName
 		def savedPhoto = document.save()
 		if (savedPhoto == null) {
-			log.error("Problem uploading photo: ${document.originalFileName}, ${document.allKeywords}")
+			log.error("Problem uploading file: ${document.originalFileName}, ${document.allKeywords}")
 			document.errors.allErrors.each {
 				log.error(it)
 			}
@@ -232,17 +232,17 @@ class DocumentController {
 		def documentWidget = SCMSDocumentWidget.get(params.id)
 		def document = SCMSDocument.get(params.documentId)
 		documentWidgetService.deleteDocumentWidgetDocument(documentWidget, document)
+		def documents = documentWidget.documents
+		render(template: "/document/documentWidgetDocumentList", model: [documentWidget: documentWidget, documents: documents, total: documentWidget.documents.size(), offset: 0, max: 5], plugin: "simple-cms")
 	}
 	
 	def updateDocumentWidgetDocumentIds() {
-		def documentWidget = SCMSDocumentWidget.get(params.id)
+		def documentWidgetId = params.id
 		def documentIds = params.list('documentIds[]')
-		documentIds.each { documentId ->
-			def document = SCMSDocument.get(documentId)
-			documentWidget.addToDocuments(document)
-		}
-		documentWidget.save(failOnError: true, flush: true)
-		render(template: "/layouts/updated")
+		def documentWidget = documentWidgetService.updateDocumentWidgetIds(documentWidgetId, documentIds)
+		def documents = documentWidget.documents
+		println "--Documents size: ${documents.size()}"
+		render(template: "/document/documentWidgetDocumentList", model: [documentWidget: documentWidget, documents: documents, total: documentWidget.documents.size(), offset: 0, max: 5], plugin: "simple-cms")
 	}
 
 }
