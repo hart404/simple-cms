@@ -44,7 +44,7 @@
 					   <g:link controller="menu" action="edit" id="${menu.id}">Edit</g:link>
 					</td>
                     <td>
-                       <g:link controller="menu" action="delete" id="${menu.id}">Delete</g:link>
+                       <g:link controller="menuBar" action="removeMenu" params="[menuBarId: menuBarInstance.id, menuId: menu.id]">Remove</g:link>
                     </td>
 				</tr>
 			</g:each>

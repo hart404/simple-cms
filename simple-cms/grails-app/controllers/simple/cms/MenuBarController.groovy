@@ -3,6 +3,8 @@ package simple.cms
 import org.springframework.dao.DataIntegrityViolationException
 
 class MenuBarController {
+	
+	def menuService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -115,6 +117,14 @@ class MenuBarController {
 		def menuLink = new SCMSMenuLink(menu: menu, link: menu.canonicalLink())
 		menuLink.save(failOnError: true, flush: true)
 		render(template: '/layouts/updated')
+	}
+	
+	def removeMenu() {
+		def menuBarId = params.menuBarId
+		def menuId = params.menuId
+		println "menuBarId: ${menuBarId}, menuId: ${menuId}"
+		menuService.removeMenu(menuBarId, menuId)
+		redirect(action: "edit", id: menuBarId)
 	}
 
 }

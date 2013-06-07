@@ -15,7 +15,7 @@ class SCMSMenuBar {
 	}
 	
 	static mapping = {
-		menus(cascade: "all, delete-orphan", lazy: false, cache: true)
+		menus(lazy: false, cache: true)
 		cache: true
 	}
 	

@@ -15,5 +15,12 @@ class MenuService {
 		menu.removeFromMenuItems(menuItem)
 		menu.save(failOnError: true, flush: true)
 	}
+	
+	def removeMenu(menuBarId, menuId) {
+		def menuBar = SCMSMenuBar.get(menuBarId)
+		def menu = SCMSMenu.get(menuId)
+		menuBar.removeFromMenus(menu)
+		menuBar.save(failOnError: true, flush: true)
+	}
 
 }

@@ -12,7 +12,7 @@ class SCMSMenu extends SCMSMenuItem {
 	}
 	
 	static mapping = {
-		menuItems(cascade: "all, delete-orphan", lazy: false, cache: true)
+		menuItems(lazy: false, cache: true)
 		cache: true
 	}
 	

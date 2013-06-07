@@ -43,10 +43,10 @@
                     </td>
                     <td>
                        <g:if test="${menu.canHaveItemsAdded()}">
-                          <button type='button' onClick="removeMenu(${menuInstance.id}, ${menu.id});" >Delete</button>
+                          <button type='button' onClick="removeMenu(${menuInstance.id}, ${menu.id});" >Remove</button>
                        </g:if>
                        <g:else>
-                          <button type='button' onClick="removeMenuItem(${menuInstance.id}, ${menu.id});" >Delete</button>
+                          <button type='button' onClick="removeMenuItem(${menuInstance.id}, ${menu.id});" >Remove</button>
                        </g:else>                       
                     </td>
                 </tr>
