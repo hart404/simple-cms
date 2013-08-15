@@ -5,7 +5,7 @@ import java.util.List;
 class SCMSStaticPage {
 
 	String link
-	Boolean canBeEditedByLeader
+	Boolean canBeEditedByLeader = false
 	static SCMSStaticPage currentPage
 	
 	List<SCMSWidget> widgets
