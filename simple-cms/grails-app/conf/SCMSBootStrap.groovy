@@ -38,6 +38,9 @@ Contains only one HTML widget and a Document widget.
 Contains only one HTML widget, a Document widget and two Photo widgets.
 """
 
+	static final String DOCUMENT_2_PHOTO_DESCRIPTION = """
+Contains only one HTML widget, two Document widgets and two Photo widgets.
+"""
 	def init = { servletContext ->
 		createDefaultPhoto()
 		createPageTemplates()
@@ -54,6 +57,7 @@ Contains only one HTML widget, a Document widget and two Photo widgets.
 		createPlain()
 		createDocument()
 		createDocumentPhoto()
+		createDocument2Photo()
 	}
 	
 	def createStandard() {
@@ -177,6 +181,23 @@ Contains only one HTML widget, a Document widget and two Photo widgets.
 			documentPhotoTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
 			documentPhotoTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo2"))
 			documentPhotoTemplate.addToWidgetCreators(new SCMSDocumentWidgetCreator(widgetId: "document1"))
+			documentPhotoTemplate.save(failOnError: true)
+		}
+	}
+	
+	def createDocument2Photo() {
+		def documentPhotoTemplate = SCMSPageTemplate.findByName("Document 2 Photo")
+		if (documentPhotoTemplate == null) {
+			documentPhotoTemplate = new SCMSPageTemplate(
+				name: "Document 2 Photo",
+				description: DOCUMENT_2_PHOTO_DESCRIPTION,
+				associatedGSP: "document2Photo.gsp"
+			)
+			documentPhotoTemplate.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
+			documentPhotoTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
+			documentPhotoTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo2"))
+			documentPhotoTemplate.addToWidgetCreators(new SCMSDocumentWidgetCreator(widgetId: "document1"))
+			documentPhotoTemplate.addToWidgetCreators(new SCMSDocumentWidgetCreator(widgetId: "document2"))
 			documentPhotoTemplate.save(failOnError: true)
 		}
 	}
