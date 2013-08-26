@@ -9,9 +9,11 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
 
 import com.drew.imaging.ImageMetadataReader
+import com.drew.lang.GeoLocation
 import com.drew.metadata.Directory
 import com.drew.metadata.Metadata
 import com.drew.metadata.exif.ExifIFD0Directory
+import com.drew.metadata.exif.GpsDirectory
 import com.drew.metadata.iptc.IptcDirectory
 import com.drew.metadata.jpeg.JpegDirectory
 
@@ -38,13 +40,11 @@ class PhotoController {
 	}
 
 	def upload = {
-		println "Uploading ${params.qqfile}"
 		try {
 			createUploadDirectory()
 			File uploaded = createTemporaryFile()
 			InputStream inputStream = selectInputStream(request)
 			uploadFile(inputStream, uploaded)
-			println "Calling createPhotoForFile ${uploaded.name} ${params.qqfile}"
 			createPhotoForFile(uploaded, DEFAULT_S3_SOURCE, DEFAULT_PATH, uploaded.name, params.qqfile)
 			transferFileToS3(uploaded)
 			return render(text: [success:true] as JSON, contentType:'text/json')
@@ -105,13 +105,12 @@ class PhotoController {
 		addJPEGItems(metadataMap, metadata)
 		addEXIFItems(metadataMap, metadata)
 		addIPTCItems(metadataMap, metadata)
+		addGPSItems(metadataMap, metadata)
 		// Add the file name parts to the keywords
 		def parts = originalFileName.tokenize(".")
 		parts.each { part ->
 			metadataMap["allKeywords"] += " ${part} "
 		}
-		println "All Keywords: ${metadataMap['allKeywords']}"
-		println "Keywords: ${metadataMap['keywords']}"
 		def photo = new SCMSPhoto(metadataMap)
 		photo.source = sourceURL
 		photo.path = path
@@ -151,6 +150,18 @@ class PhotoController {
 		metadataMap["keywords"] = (directory?.getStringArray(IptcDirectory.TAG_KEYWORDS) ?: []) as List
 		metadataMap["allKeywords"] = directory?.getString(IptcDirectory.TAG_KEYWORDS) ?: ""
 		// metadataMap["usageRights"] = directory?.getString(IptcDirectory.TAG_) ?: ""
+	}
+	
+	private void addGPSItems(metadataMap, metadata) {
+		if (metadata.containsDirectory(GpsDirectory.class)) {
+			Directory directory = metadata?.getDirectory(GpsDirectory.class)
+			GeoLocation location = directory.getGeoLocation()
+			if (location) {
+				metadataMap["latitude"] = new BigDecimal(location.getLatitude())
+				metadataMap["longitude"] = new BigDecimal(location.getLongitude())
+				metadataMap["altitude"] = new BigDecimal(directory?.getRational(GpsDirectory.TAG_GPS_ALTITUDE).doubleValue())
+			}
+		}
 	}
 	
 	def searchForPhotos() {
@@ -242,7 +253,6 @@ class PhotoController {
 	}
 	
 	def deleteMultiplePhotos() {
-		println "Deleting photos with params: ${params}"
 		def photoIds = params.list('photoIds[]')
 		photoIds.each { photoId ->
 			photoService.deleteIndividualPhoto(photoId)

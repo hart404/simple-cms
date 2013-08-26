@@ -22,6 +22,9 @@ class SCMSPhoto {
 	String originalFileName
 	Date dateCreated
 	String usageRights
+	BigDecimal latitude
+	BigDecimal longitude
+	BigDecimal altitude
 
     static constraints = {
 		source(nullable: false)
@@ -31,6 +34,9 @@ class SCMSPhoto {
 		copyright(nullable: true)
 		description(nullable: true, size: 0..2000)
 		usageRights(nullable: true)
+		latitude(nullable: true)
+		longitude(nullable: true)
+		altitude(nullable: true)
     }
 	
 	static mapping = {

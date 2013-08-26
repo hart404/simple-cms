@@ -28,7 +28,7 @@ grails.project.dependency.resolution = {
 
         // runtime 'mysql:mysql-connector-java:5.1.5'
 		compile (':java-xmlbuilder:0.4')
-		compile (':metadata-extractor:2.5.0-RC3')
+		compile (':metadata-extractor:2.6.4')
 		compile (':xmpcore:0.1')
 		
     }
