@@ -18,6 +18,7 @@ class ContentController {
 		}
 		if (page == null) {
 			redirect(uri: '/error', params: [page: baseURI])
+			log.error("Someone tried to access a missing page: ${baseURI}")
 		} else {
 			def template = page.template
 			def widgets = [:]
@@ -26,7 +27,7 @@ class ContentController {
 			}
 			def menuLink = SCMSMenuLink.findByLink(baseURI)
 			if (menuLink == null) {
-				log.debug("Disaster! No menuLink found for: ${baseURI}")
+				log.error("Disaster! No menuLink found for: ${baseURI}")
 			} else {
 				widgets.menu = menuLink.menu
 			}
