@@ -36,6 +36,4 @@ grails.project.dependency.resolution = {
         }
 		build (":release:2.0.4") { excludes 'svn' }
     }
-	
-	
 }
