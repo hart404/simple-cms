@@ -17,17 +17,11 @@
 			<table>
 				<thead>
 					<tr>
-					
-						<th>Original File Name</th>
-						
+                        <g:sortableColumn property="originalFileName" title="${message(code: 'document.originalFileName.label', default: 'Original File Name')}" />
 					    <th>Link</th>
-					    
-						<th>Description</th>
-											
-						<th>Keywords</th>
-					
-						<th>Date Created</th>
-					
+                        <g:sortableColumn property="description" title="${message(code: 'document.description.label', default: 'Description')}" />
+                        <g:sortableColumn property="allKeywords" title="${message(code: 'document.keywords.label', default: 'Keywords')}" />
+                        <g:sortableColumn property="dateCreated" title="${message(code: 'document.dateCreated.label', default: 'Date Created')}" />
 					</tr>
 				</thead>
 				<tbody>

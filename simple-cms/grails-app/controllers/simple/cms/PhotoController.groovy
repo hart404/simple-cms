@@ -180,6 +180,8 @@ class PhotoController {
 	
 	def list() {
 		params.max = Math.min(params.max ? params.int('max') : 20, 100)
+		if (!params.sort) params.sort = "dateCreated"
+		if (!params.order) params.order = "desc"
 		[photoInstanceList: SCMSPhoto.list(params), photoInstanceTotal: SCMSPhoto.count()]
 	}
 	

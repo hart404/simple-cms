@@ -27,7 +27,7 @@
 						<g:sortableColumn property="originalFileName" title="${message(code: 'photo.originalFileName.label', default: 'Original File Name')}" />
 					
 						<g:sortableColumn property="artist" title="${message(code: 'photo.artist.label', default: 'Artist')}" />
-					    <th>Date Created</th>
+                        <g:sortableColumn property="dateCreated" title="${message(code: 'photo.dateCreated.label', default: 'Date Created')}" />
                         <g:sortableColumn property="width" title="${message(code: 'photo.width.label', default: 'Width')}" />
                         <g:sortableColumn property="height" title="${message(code: 'photo.height.label', default: 'Height')}" />
                         <th><g:message code="photo.image.label" default="Image" /></th>

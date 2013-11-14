@@ -1,9 +1,9 @@
 <html>
 <head>
 <meta name="layout" content="contentSidebarLayout">
-<meta name="description" content="${page.descriptionMetadata}" />
-<meta name="keywords" content="${page.keywordsMetadata}" />
-<title>${page.title}</title>
+<meta name="description" content="${page?.descriptionMetadata}" />
+<meta name="keywords" content="${page?.keywordsMetadata}" />
+<title>${page?.title}</title>
 </head>
 <body>
 	<div class="contentContainer">

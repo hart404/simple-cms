@@ -32,7 +32,7 @@ class SimpleCMSTagLib {
 
 	def photoWidget = { attributes, body ->
 		def widget = attributes.widget
-		def photo = widget.photo
+		def photo = widget?.photo
 		if (photo == null) {
 			if (SCMSPhoto.DEFAULT_PHOTO_ID) {
 				def defaultPhoto = SCMSPhoto.get(SCMSPhoto.DEFAULT_PHOTO_ID)
