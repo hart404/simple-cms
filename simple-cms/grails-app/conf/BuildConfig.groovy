@@ -31,9 +31,15 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        build (":tomcat:$grailsVersion") {
+        build (":tomcat:7.0.47") {
             export = false
         }
+        runtime ":hibernate:3.6.10.4"
 		build (":release:2.0.4") { excludes 'svn' }
+		compile ":ckeditor:3.6.3.0"
+		compile ":searchable:0.6.5"
+		runtime ":jquery:1.10.2"
+		compile ":jquery-ui:1.8.24"
+		compile ":joda-time:1.4"	
     }
 }

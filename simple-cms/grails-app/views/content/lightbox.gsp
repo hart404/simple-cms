@@ -1,9 +1,13 @@
 <html>
 <head>
 <meta name="layout" content="contentSidebarLayout">
-<meta name="description" content="${page.descriptionMetadata}" />
-<meta name="keywords" content="${page.keywordsMetadata}" />
-<title>${page.title}</title>
+<g:if test="${page?.descriptionMetadata}">
+    <meta name="description" content="${page?.descriptionMetadata}" />
+</g:if>
+<g:if test="${page?.keywordsMetadata}">
+    <meta name="keywords" content="${page?.keywordsMetadata}" />
+</g:if>
+<title>${page?.title}</title>
 <link rel="stylesheet" href="<g:createLinkTo dir='/js/lightbox/css' file='lightbox.css'/>" type="text/css"/>
 <script type="text/javascript" src="<g:createLinkTo dir='/js/lightbox/js' file='lightbox.js'/>"></script>
 </head>
