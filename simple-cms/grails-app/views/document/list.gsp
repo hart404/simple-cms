@@ -14,6 +14,7 @@
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
+			<p>Click on the original file name to update the description and/or keywords. Please remember to put your program in the keywords.</p>
 			<table>
 				<thead>
 					<tr>
