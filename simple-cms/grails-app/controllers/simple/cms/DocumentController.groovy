@@ -27,7 +27,7 @@ class DocumentController {
     }
 
     def list() {
-        params.max = Math.min(params.max as Long ?: 10, 100)
+        params.max = Math.min(params.max as Long ?: 30, 100)
 		if (!params.sort) params.sort = "dateCreated"
 		if (!params.order) params.order = "desc"
         [SCMSDocumentInstanceList: SCMSDocument.list(params), SCMSDocumentInstanceTotal: SCMSDocument.count()]
