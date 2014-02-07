@@ -14,6 +14,10 @@ class SCMSBootStrap {
 Standard internal page. Has one text area that floats to the left and two photos with captions
 that float to the right.
 """
+	static final String STANDARD_1_PHOTO_DESCRIPTION = """
+Standard internal page, one photo. Has one text area that floats to the left and one photo with caption
+that floats to the right.
+"""
 	static final String LIGHTBOX_DESCRIPTION = """
 Same as standard but with an additional lightbox widget.
 """
@@ -51,6 +55,7 @@ Contains only one HTML widget, two Document widgets and two Photo widgets.
 	
 	def createPageTemplates() {
 		createStandard()
+		createStandardOnePhoto()
 		createLightbox()
 		createGallery()
 		createNoSidebar()
@@ -78,6 +83,26 @@ Contains only one HTML widget, two Document widgets and two Photo widgets.
 				standardTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
 				standardTemplate.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo2"))
 				standardTemplate.save(failOnError: true)
+			}
+		}	
+	}
+	
+	def createStandardOnePhoto() {
+		def standardTemplateOnePhoto = SCMSPageTemplate.findByName("Standard One Photo")
+		if (standardTemplateOnePhoto == null) {
+			standardTemplateOnePhoto = new SCMSPageTemplate(
+				name: "Standard One Photo",
+				description: STANDARD_1_PHOTO_DESCRIPTION,
+				associatedGSP: "standard1Photo.gsp"
+			)
+			standardTemplateOnePhoto.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
+			standardTemplateOnePhoto.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
+			standardTemplateOnePhoto.save(failOnError: true)
+		} else {
+			if (standardTemplateOnePhoto.widgetCreators.size() == 0) {
+				standardTemplateOnePhoto.addToWidgetCreators(new SCMSHTMLWidgetCreator(widgetId: "html1"))
+				standardTemplateOnePhoto.addToWidgetCreators(new SCMSPhotoWidgetCreator(widgetId: "photo1"))
+				standardTemplateOnePhoto.save(failOnError: true)
 			}
 		}	
 	}
