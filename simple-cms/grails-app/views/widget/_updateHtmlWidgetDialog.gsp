@@ -1,4 +1,4 @@
-<div id="dialog-form-html" title="Update Text" style="display: none">
+	<div id="dialog-form-html" title="Update Text" style="display: none">
     <img src="<g:createLinkTo dir='/images' file='spinner.gif'/>" id="spinner"/>
     <div id='editor'></div>
     <script>
@@ -45,7 +45,7 @@
                 editor.destroy();
                 editor = null;
             },
-            resizeStop: function(event, ui) {resizeEditor($("#dialog-form-html").dialog("option", "height"), $("#dialog-form").dialog("option", "width"))}
+            resizeStop: function(event, ui) {resizeEditor($("#dialog-form-html").dialog("option", "height"), $("#dialog-form-html").dialog("option", "width"))}
         });
 
     });
