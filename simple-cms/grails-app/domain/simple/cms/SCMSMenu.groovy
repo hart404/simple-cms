@@ -38,7 +38,12 @@ class SCMSMenu extends SCMSMenuItem {
 			buffer << "<ul class='sub_menu, notLastItem'>\n"
 		}
 		menuItems.each { menuItem ->
-			buffer << menuItem.render(level + 1, lastItem)
+			if (menuItem == null) {
+				println "***** null menu item in ${this} *****"
+				buffer << "null menu item"
+			} else {
+				buffer << menuItem.render(level + 1, lastItem)
+			}
 		}
 		buffer << "</ul>\n"
 		if (level == 1) {			
@@ -71,6 +76,10 @@ class SCMSMenu extends SCMSMenuItem {
 				}
 			}
 		}
+	}
+	
+	String toString() {
+		"Menu: ${title}"
 	}
 	
 }
